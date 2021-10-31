@@ -1,4 +1,2 @@
 .history/
-yjs/server/node_modules/
-yjs/client/node_modules/
-yjs/info/node_modules/
+node_modules/
