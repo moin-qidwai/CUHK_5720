@@ -32,14 +32,12 @@ awareness.on('change', _ => {
       number_of_clients: number_of_users,
       text: current_text
   });
-
-  if (number_of_users === 1) {
-    fs.writeFile('information.json', JSON.stringify(information), (err) => {
-      if (err) return console.log(err);
-      console.log('Done');
-      process.exit(0);
-    });
-  }
+  
+  fs.writeFile('information.json', JSON.stringify(information), (err) => {
+    if (err) return console.log(err);
+    console.log('Done');
+    process.exit(0);
+  });
 });
 
 // observe changes 
