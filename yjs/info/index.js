@@ -31,7 +31,7 @@ awareness.on('change', _ => {
   information.push({
       elapsed: elapsed_time(),
       number_of_clients: number_of_users,
-      text: current_text,
+      text: current_text.length,
       free_memory: os.freemem(),
       total_memory: os.totalmem() - os.freemem(),
       idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
@@ -40,25 +40,25 @@ awareness.on('change', _ => {
 
   fs.writeFile('information.json', JSON.stringify(information), (err) => {
     if (err) return console.log(err);
-    console.log('Done');
+    console.log('File updated');
   });
 });
 
 // observe changes 
-yText.observe(_ => {
-  // print updates when the data changes
-  // console.log('new text: ' + yText.toString())
-  current_text = yText.toString();
-  information.push({
-    elapsed: elapsed_time(),
-    number_of_clients: number_of_users,
-    text: current_text,
-    free_memory: os.freemem(),
-    total_memory: os.totalmem() - os.freemem(),
-    idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-    used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-  });
-});
+// yText.observe(_ => {
+//   // print updates when the data changes
+//   // console.log('new text: ' + yText.toString())
+//   current_text = yText.toString();
+//   information.push({
+//     elapsed: elapsed_time(),
+//     number_of_clients: number_of_users,
+//     text: current_text,
+//     free_memory: os.freemem(),
+//     total_memory: os.totalmem() - os.freemem(),
+//     idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+//     used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+//   });
+// });
 
 function elapsed_time() {
   // var precision = 5;
