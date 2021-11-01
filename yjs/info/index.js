@@ -41,7 +41,6 @@ awareness.on('change', _ => {
   fs.writeFile('information.json', JSON.stringify(information), (err) => {
     if (err) return console.log(err);
     console.log('Done');
-    process.exit(0);
   });
 });
 
