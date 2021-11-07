@@ -22,6 +22,16 @@ const awareness = websocketProvider.awareness;
 
 const yText = ydoc.getText('test')
 
+information.push({
+  elapsed: elapsed_time(),
+  number_of_clients: number_of_users,
+  text:  yText.toString().length,
+  free_memory: os.freemem(),
+  total_memory: os.totalmem() - os.freemem(),
+  idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+  used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+});
+
 awareness.on('change', _ => {
   // Whenever somebody updates their awareness information,
   // we log all awareness information from all users.
