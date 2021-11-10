@@ -31,7 +31,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
   // add sample text to the string
   var index = 1;
   setInterval(() => {
-    yText.delete(index);
+    yText.delete(index, 1);
     index++;
   }, 1000);
 }
