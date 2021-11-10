@@ -2,9 +2,9 @@
   "name": "client",
   "version": "1.0.0",
   "description": "The client implementation for scenario testing and stress testing",
-  "main": "index.js",
+  "main": "insert.js",
   "scripts": {
-    "start": "node index.mjs",
+    "start": "node insert.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "qidwaimoin@yahoo.com",

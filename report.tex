@@ -1,5 +1,10 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\graphicspath{ {./yjs/charts/one_millisecond_60_users/}{./yjs/charts/one_second_90_users/}{./yjs/charts/one_second_200_users/}{./yjs/charts/ten_second_90_users/} }
+
+\setlength{\oddsidemargin}{7pt}
+\setlength{\textwidth}{438pt}
 
 \title{Analysis of Contemporary Methodologies For Near-Real Time Collaboration}
 \date{2021-09-26}
@@ -348,12 +353,14 @@
   \subsubsection{Advantages}
   \begin{itemize}
     \item There is no need to wait for acknowledgement from other participants/server, increasing performance.
+    \item Computation and resolution of a large number of simultaneous conflicts with a relatively low processing footprint.
     \item It is peer to peer by default, hence sharing in all the advantages of P2P architecture.
   \end{itemize}
 
   \subsubsection{Disadvantages}
   \begin{itemize}
     \item CRDT enforces certain conditions on operations as discussed previously, as such not all operations are compatible with CRDT.
+    \item The memory requirements for CRDTs can be high depending on the structure used as significant meta data needs to be attached to each character and user.
     \item Since CRDTs are data types, they need to be created for each type of data that our users interact with, hence leading to high initial complexity.
   \end{itemize}
 
@@ -374,7 +381,79 @@
   \end{itemize}
 
   \section{Performance Analysis and Testing}
-  TBC
+  In this section we will outline benchmark tests performed using different implementations of YATA and OT.
+  These will be compared to shed light on the relative performance advantages and disadvantages mentioned above.
+  
+  \subsection{Testing VM Specifications}
+  The tests have been performed on a cloud based compute instance from Digital Ocean.
+  The specifications are as shown below:
+  \begin{itemize}
+    \item CPU: 500 MHz (Single Core)
+    \item Memory: 2 GB
+  \end{itemize}
+
+  \subsection{Benchmarks Scenario One}
+  \textbf{The below graphs are from a scenario that consists of 60 parallel users inserting a character 
+  every millisecond.}
+
+  \subsubsection{YATA: Number Of Users}
+  The below graph shows the number of connected and active clients over program execution time. 
+  The key property to observe in this graph is the peak and trough.
+  As we will see the clients are being terminated by the OS due to low memory.
+  This falls in line with our expectation of memory being a significant constraint on CRDT performance.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_num_of_clients_time_S1.png}
+
+  \subsubsection{YATA: Document Size}
+  The below graph shows the size in number of characters of the shared document against program execution time.
+  The sharp rise indicates the pace of the clients' conflict resolution processing. Ofcourse due to memory constraints 
+  this rate of change is stabilizing at the end of the execution. 
+  \\\\
+  \includegraphics[scale=0.48]{yjs_doc_size_time_S1.png}
+
+  \subsubsection{YATA: CPU Utilization}
+  The below graph shows the CPU utilization against program execution time.
+  The interesting thing to note here is that this graph is highly correlated to the one above of document size.
+  This is due to the fact that as the size of the document increases the number of potential conflicts increases as well.
+  As computation resource is required to process each conflict the CPU utilization increases.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_cpu_usage_time_S1.png}
+
+  \subsubsection{YATA: Memory Utilization}
+  The below graph shows the available memory against utilized memory in Megabytes over program execution time.
+  As can be observed, the available memory trends towards zero with time while the utilized memory trends towards 2GB.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_used_vs_available_memory_time_S1.png}
+
+  \subsection{Benchmarks Scenario Two}
+  \textbf{The below graphs are from a scenario that consists of 90 parallel users inserting a character every second.}
+  
+  \subsubsection{YATA: Number Of Users}
+  The below graph shows the number of connected and active clients over program execution time. 
+  Comparing this graph to the one in scenario one shows the impact that slower insertions have on potential ceiling for number
+  of clients.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_num_of_clients_time_S2.png}
+
+  \subsubsection{YATA: Document Size}
+  The below graph shows the size in number of characters of the shared document against program execution time.
+  This is a much more linear function compared to the one in scenario one, due to the fact that the processor is not overburdened.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_doc_size_time_S2.png}
+
+  \subsubsection{YATA: CPU Utilization}
+  The below graph shows the CPU utilization against program execution time.
+  This is also highly correlated with the document size graph as was observed in scenario one.
+  \\\\
+  \includegraphics[scale=0.48]{yjs_cpu_usage_time_S2.png}
+
+  \subsubsection{YATA: Memory Utilization}
+  The below graph shows the available memory against utilized memory in Megabytes over program execution time.
+  The memory is immediately exhausted in this scenario due to the fact that each client requires a minimum amount of memory
+  in order to store the core library metadata and with one second as the character insertion interval a lot more clients
+  are able to initiate before resource constraints are encountered. 
+  \\\\
+  \includegraphics[scale=0.48]{yjs_used_vs_available_memory_time_S2.png}
 
   \section{Conclusion}
   The YATA approach resolves many of the short-comings of other NRT collaboration approaches.
