@@ -18,6 +18,8 @@ var number_of_users = 0;
 
 var start = process.hrtime();
 
+var first_connected = false;
+
 doc.subscribe(function(error) {
     if (error) return console.error(error);
 
@@ -38,21 +40,26 @@ doc.subscribe(function(error) {
     
     presence.on('receive', function(_, user) {
         number_of_users++;
+        if (!first_connected) {
+            first_connected = true;
 
-        information.push({
-            elapsed: elapsed_time(),
-            number_of_clients: number_of_users,
-            text: doc.data.ops[0].insert.length,
-            free_memory: os.freemem(),
-            total_memory: os.totalmem() - os.freemem(),
-            idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-            used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-        });
-
-        fs.writeFile('information.json', JSON.stringify(information), (err) => {
-            if (err) return console.log(err);
-            console.log('File updated');
-        });
+            setInterval(function() {
+                information.push({
+                    elapsed: elapsed_time(),
+                    number_of_clients: number_of_users,
+                    text: doc.data.ops[0].insert.length,
+                    free_memory: os.freemem(),
+                    total_memory: os.totalmem() - os.freemem(),
+                    idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+                    used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) - cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+                });
+        
+                fs.writeFile('information.json', JSON.stringify(information), (err) => {
+                    if (err) return console.log(err);
+                    console.log('File updated');
+                });
+            }, 5000);
+        }
     });
 });
 
