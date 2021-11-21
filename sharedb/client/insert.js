@@ -26,15 +26,14 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
         const localPresence = presence.create(id+'');
         // The presence value can take any shape
         localPresence.submit({user: 'user_'+id});
+        var index = 0;
+        setInterval(() => {
+            if (index === id) {
+                doc.submitOp([{insert: ''+(id % 10)}]);
+            }
+            const value = alphabets[(id + index) % 27];
+            doc.submitOp([{insert: value}]);
+            index++;
+        }, 1000);
     });
-
-    var index = 0;
-    setInterval(() => {
-        if (index === id) {
-            doc.submitOp([{insert: ''+(id % 10)}]);
-        }
-        const value = alphabets[(id + index) % 27];
-        doc.submitOp([{insert: value}]);
-        index++;
-    }, 1000);
 }
