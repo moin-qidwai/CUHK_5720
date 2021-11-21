@@ -26,14 +26,16 @@ function createDoc(callback) {
 function startServer() {
   // Create a web server to serve files and listen to WebSocket connections
   var app = express();
-  app.use(express.static('static'));
-  app.use(express.static('node_modules/quill/dist'));
   var server = http.createServer(app);
 
   // Connect any incoming WebSocket connection to ShareDB
   var wss = new WebSocket.Server({server: server});
   wss.on('connection', function(ws) {
     var stream = new WebSocketJSONStream(ws);
+    stream.on('error', (error) => {
+        // ignore error
+        console.log(error);
+    })
     backend.listen(stream);
   });
 
