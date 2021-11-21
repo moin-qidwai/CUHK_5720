@@ -12,6 +12,7 @@ const information = [];
 var number_of_users = 0;
 
 var start = process.hrtime();
+var first_connected = false;
 
 const websocketProvider = new WebsocketProvider(
   'ws://localhost:1234', 'crdt-testing', ydoc
@@ -34,40 +35,28 @@ information.push({
 awareness.on('change', _ => {
   // Whenever somebody updates their awareness information,
   // we log all awareness information from all users.
-  number_of_users = Array.from(awareness.getStates().values()).length;
-  console.log(number_of_users);
+  number_of_users++;
+  if (!first_connected) {
+      first_connected = true;
 
-  information.push({
-      elapsed: elapsed_time(),
-      number_of_clients: number_of_users,
-      text:  yText.toString().length,
-      free_memory: os.freemem(),
-      total_memory: os.totalmem() - os.freemem(),
-      idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-      used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-  });
-
-  fs.writeFile('information.json', JSON.stringify(information), (err) => {
-    if (err) return console.log(err);
-    console.log('File updated');
-  });
+      setInterval(function() {
+          information.push({
+              elapsed: elapsed_time(),
+              number_of_clients: number_of_users,
+              text: yText.toString().length,
+              free_memory: os.freemem(),
+              total_memory: os.totalmem() - os.freemem(),
+              idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+              used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) - cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+          });
+  
+          fs.writeFile('information.json', JSON.stringify(information), (err) => {
+              if (err) return console.log(err);
+              console.log('File updated');
+          });
+      }, 5000);
+  }
 });
-
-// observe changes 
-// yText.observe(_ => {
-//   // print updates when the data changes
-//   // console.log('new text: ' + yText.toString())
-//   current_text = yText.toString();
-//   information.push({
-//     elapsed: elapsed_time(),
-//     number_of_clients: number_of_users,
-//     text: current_text,
-//     free_memory: os.freemem(),
-//     total_memory: os.totalmem() - os.freemem(),
-//     idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-//     used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-//   });
-// });
 
 function elapsed_time() {
   // var precision = 5;

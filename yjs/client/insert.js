@@ -30,8 +30,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
   // });
   
   // add sample text to the string
-  yText.insert(0, 'a');
-  var index = 1;
+  var index = 0;
   setInterval(() => {
     if (index === id) {
       yText.insert(index, ''+(id % 10));
