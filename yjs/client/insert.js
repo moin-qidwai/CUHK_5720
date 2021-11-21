@@ -33,10 +33,10 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
   var index = 0;
   setInterval(() => {
     if (index === id) {
-      yText.insert(index, ''+(id % 10));
+      yText.insert(0, ''+(id % 10));
     }
     const value = alphabets[(id + index) % 27];
-    yText.insert(index, value);
+    yText.insert(0, value);
     index++;
   }, 1000);
 }
