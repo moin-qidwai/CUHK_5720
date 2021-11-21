@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\graphicspath{ {./yjs/charts/one_millisecond_60_users/}{./yjs/charts/one_second_90_users/}{./yjs/charts/one_second_200_users/}{./yjs/charts/ten_second_90_users/} }
+\graphicspath{ {./yjs/charts/one_millisecond_del_60_users/}{./yjs/charts/one_millisecond_60_users/}{./yjs/charts/one_second_90_users/}{./yjs/charts/one_second_200_users/}{./yjs/charts/ten_seconds_90_users/} }
 
 \setlength{\oddsidemargin}{7pt}
 \setlength{\textwidth}{438pt}
@@ -392,68 +392,107 @@
     \item Memory: 2 GB
   \end{itemize}
 
-  \subsection{Benchmarks Scenario One}
-  \textbf{The below graphs are from a scenario that consists of 60 parallel users inserting a character 
-  every millisecond.}
+  \section*{Benchmarks}
+  \subsection{Scenarios}
+  The below table shows the setup for each scenario, the frequency indicates the number of characters 
+  inserted or deleted per second and the users column shows the number of concurrent users.\\
 
-  \subsubsection{YATA: Number Of Users}
-  The below graph shows the number of connected and active clients over program execution time. 
-  The key property to observe in this graph is the peak and trough.
-  As we will see the clients are being terminated by the OS due to low memory.
+  \begin{tabular}{||c c c c||} 
+    \hline
+    Scenario & Type & Frequency & Users \\ [0.5ex] 
+    \hline\hline
+    A & Insert & 1000 & 60 \\ 
+    \hline
+    B & Insert & 1 & 90 \\
+    \hline
+    C & Insert & 1 & 200 \\
+    \hline
+    D & Insert & 0.1 & 90 \\
+    \hline
+    E & Delete & 1000 & 60 \\ [1ex] 
+    \hline
+  \end{tabular}
+
+  \subsection{Number Of Users}
+  \subsubsection{YATA}
+  Observe that the clients are being terminated by the OS due to low memory.
   This falls in line with our expectation of memory being a significant constraint on CRDT performance.
   \\\\
-  \includegraphics[scale=0.48]{yjs_num_of_clients_time_S1.png}
+  \begin{center}
+    \includegraphics[scale=0.48]{yjs_users_S1.png}
 
-  \subsubsection{YATA: Document Size}
-  The below graph shows the size in number of characters of the shared document against program execution time.
-  The sharp rise indicates the pace of the clients' conflict resolution processing. Ofcourse due to memory constraints 
-  this rate of change is stabilizing at the end of the execution. 
-  \\\\
-  \includegraphics[scale=0.48]{yjs_doc_size_time_S1.png}
+    \textbf{Scenario A}
+    
+    \includegraphics[scale=0.48]{yjs_users_S2.png}
+    
+    \textbf{Scenario B}
+    
+    \includegraphics[scale=0.48]{yjs_users_S3.png}
+    
+    \textbf{Scenario C}
 
-  \subsubsection{YATA: CPU Utilization}
-  The below graph shows the CPU utilization against program execution time.
-  The interesting thing to note here is that this graph is highly correlated to the one above of document size.
+    \includegraphics[scale=0.48]{yjs_users_S4.png}
+    
+    \textbf{Scenario D}
+    
+    \includegraphics[scale=0.48]{yjs_users_S5.png}
+    
+    \textbf{Scenario E}
+  \end{center}
+
+  \subsection{CPU Utilization}
+  \subsubsection{YATA}
+  Observe that CPU utilization is highly correlated to the document size.
   This is due to the fact that as the size of the document increases the number of potential conflicts increases as well.
   As computation resource is required to process each conflict the CPU utilization increases.
   \\\\
-  \includegraphics[scale=0.48]{yjs_cpu_usage_time_S1.png}
+  \begin{center}
+    \includegraphics[scale=0.48]{yjs_cpu_S1.png}
 
-  \subsubsection{YATA: Memory Utilization}
-  The below graph shows the available memory against utilized memory in Megabytes over program execution time.
+    \textbf{Scenario A}
+    
+    \includegraphics[scale=0.48]{yjs_cpu_S2.png}
+    
+    \textbf{Scenario B}
+    
+    \includegraphics[scale=0.48]{yjs_cpu_S3.png}
+    
+    \textbf{Scenario C}
+
+    \includegraphics[scale=0.48]{yjs_cpu_S4.png}
+    
+    \textbf{Scenario D}
+    
+    \includegraphics[scale=0.48]{yjs_cpu_S5.png}
+    
+    \textbf{Scenario E}
+  \end{center}
+
+  \subsection{Memory Utilization}
+  \subsubsection{YATA}
   As can be observed, the available memory trends towards zero with time while the utilized memory trends towards 2GB.
   \\\\
-  \includegraphics[scale=0.48]{yjs_used_vs_available_memory_time_S1.png}
+  \begin{center}
+    \includegraphics[scale=0.48]{yjs_memory_S1.png}
 
-  \subsection{Benchmarks Scenario Two}
-  \textbf{The below graphs are from a scenario that consists of 90 parallel users inserting a character every second.}
-  
-  \subsubsection{YATA: Number Of Users}
-  The below graph shows the number of connected and active clients over program execution time. 
-  Comparing this graph to the one in scenario one shows the impact that slower insertions have on potential ceiling for number
-  of clients.
-  \\\\
-  \includegraphics[scale=0.48]{yjs_num_of_clients_time_S2.png}
+    \textbf{Scenario A}
+    
+    \includegraphics[scale=0.48]{yjs_memory_S2.png}
+    
+    \textbf{Scenario B}
+    
+    \includegraphics[scale=0.48]{yjs_memory_S3.png}
+    
+    \textbf{Scenario C}
 
-  \subsubsection{YATA: Document Size}
-  The below graph shows the size in number of characters of the shared document against program execution time.
-  This is a much more linear function compared to the one in scenario one, due to the fact that the processor is not overburdened.
-  \\\\
-  \includegraphics[scale=0.48]{yjs_doc_size_time_S2.png}
-
-  \subsubsection{YATA: CPU Utilization}
-  The below graph shows the CPU utilization against program execution time.
-  This is also highly correlated with the document size graph as was observed in scenario one.
-  \\\\
-  \includegraphics[scale=0.48]{yjs_cpu_usage_time_S2.png}
-
-  \subsubsection{YATA: Memory Utilization}
-  The below graph shows the available memory against utilized memory in Megabytes over program execution time.
-  The memory is immediately exhausted in this scenario due to the fact that each client requires a minimum amount of memory
-  in order to store the core library metadata and with one second as the character insertion interval a lot more clients
-  are able to initiate before resource constraints are encountered. 
-  \\\\
-  \includegraphics[scale=0.48]{yjs_used_vs_available_memory_time_S2.png}
+    \includegraphics[scale=0.48]{yjs_memory_S4.png}
+    
+    \textbf{Scenario D}
+    
+    \includegraphics[scale=0.48]{yjs_memory_S5.png}
+    
+    \textbf{Scenario E}
+  \end{center}
 
   \section{Conclusion}
   The YATA approach resolves many of the short-comings of other NRT collaboration approaches.

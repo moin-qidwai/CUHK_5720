@@ -9,7 +9,6 @@ const { WebsocketProvider } = pkg;
 const ydoc = new Y.Doc();
 
 const information = [];
-var current_text = "";
 var number_of_users = 0;
 
 var start = process.hrtime();
