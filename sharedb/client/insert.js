@@ -25,7 +25,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
         var presence = connection.getPresence(collection, topic);
         const localPresence = presence.create(id+'');
         // The presence value can take any shape
-        localPresence.submit({user: 'user_'+id})
+        localPresence.submit({user: 'user_'+id});
     });
 
     var index = 0;
