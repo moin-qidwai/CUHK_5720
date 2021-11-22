@@ -98,6 +98,12 @@ INPUT ./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png
 INPUT /home/moinqidw/Courses/CUHK/5720/./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png
 INPUT ./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png
 INPUT ./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png
+INPUT /home/moinqidw/Courses/CUHK/5720/./assets/yjs_processes.png
+INPUT ./assets/yjs_processes.png
+INPUT ./assets/yjs_processes.png
+INPUT ./assets/sharedb_processes.png
+INPUT ./assets/sharedb_processes.png
+INPUT ./assets/sharedb_processes.png
 INPUT /home/moinqidw/Courses/CUHK/5720/./yjs/charts/half_second_90_users/yjs_memory_S1.png
 INPUT ./yjs/charts/half_second_90_users/yjs_memory_S1.png
 INPUT ./yjs/charts/half_second_90_users/yjs_memory_S1.png

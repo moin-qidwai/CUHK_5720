@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1637570228 "/home/moinqidw/Courses/CUHK/5720/report.tex" "/home/moinqidw/Courses/CUHK/5720/report.pdf" "report" 1637570229
+["pdflatex"] 1637574688 "/home/moinqidw/Courses/CUHK/5720/report.tex" "/home/moinqidw/Courses/CUHK/5720/report.pdf" "report" 1637574689
   "/etc/texmf/web2c/texmf.cnf" 1632636610 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk" 1636381402 28952 7cf810a4d4f4f08ac77f8dfd23caa3d4 ""
   "/home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk" 1632655244 31928 753d67153349e98cc7fad7553d172448 ""
@@ -11,8 +11,8 @@
   "/home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm2074.600pk" 1632655245 53712 7e9a9b95b06c1db07bc3e754ea51ec1e ""
   "/home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk" 1636379861 12644 ea61f17c8c8b7f4ed56a11a74f51e8be ""
   "/home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk" 1636379861 14040 43d0e2e7e696a9cb549efc7256ac7fee ""
-  "/home/moinqidw/Courses/CUHK/5720/report.aux" 1637570229 6499 bbc9848433a83666cb2da952f97d2d13 ""
-  "/home/moinqidw/Courses/CUHK/5720/report.tex" 1637570228 30385 1a7bf37801d935cc64ada297960c9610 ""
+  "/home/moinqidw/Courses/CUHK/5720/report.aux" 1637574689 6587 7cd4b94e8868908b54e9beec66052fa6 ""
+  "/home/moinqidw/Courses/CUHK/5720/report.tex" 1637574687 31206 13f6c0b63735f59ab0e32176d74a5c67 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm" 1136768653 3584 21b378cca2e40816b0e6d74a4dc98f04 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1136768653 3584 402da0b29eafbad07963b1224b222f18 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1440.tfm" 1136768653 3584 13049b61b922a28b158a38aeff75ee9b ""
@@ -60,8 +60,10 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1581979058 38841 ce3692aa899bb693b90b87eaa5d4d84e ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1632636627 75955 f78456fd1308dc295dc476a68e28d85b ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1632636629 4791332 81e3ba3f1543b8554b777a2b98043bfe ""
-  "report.aux" 1637570229 6499 bbc9848433a83666cb2da952f97d2d13 "pdflatex"
-  "report.tex" 1637570228 30385 1a7bf37801d935cc64ada297960c9610 ""
+  "assets/sharedb_processes.png" 1637574533 29278 c1bb73a2857045e74b6f5eb900bea188 ""
+  "assets/yjs_processes.png" 1637574519 34384 8e2344cac76b27f6cb8e2b77bfd263a3 ""
+  "report.aux" 1637574689 6587 7cd4b94e8868908b54e9beec66052fa6 "pdflatex"
+  "report.tex" 1637574687 31206 13f6c0b63735f59ab0e32176d74a5c67 ""
   "sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png" 1637507332 40143 210a16d7525362664d610cb5e0196217 ""
   "sharedb/charts/half_second_180_users/sharedb_memory_S3.png" 1637507172 34767 e237bda86801759c723cec8d1a3b8087 ""
   "sharedb/charts/half_second_180_users/sharedb_users_S3.png" 1637507318 35398 f9af7060c1df45c970da09fe3a3077f6 ""
@@ -82,7 +84,7 @@
   "yjs/charts/quarter_second_90_users/yjs_users_S2.png" 1637523566 37789 574d61fcc7814b3fe43a2b25c56014a6 ""
   (generated)
   "report.log"
+  "report.pdf"
   "/home/moinqidw/Courses/CUHK/5720/report.pdf"
   "/home/moinqidw/Courses/CUHK/5720/report.log"
-  "report.pdf"
   "report.aux"

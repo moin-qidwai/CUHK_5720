@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\graphicspath{ {./yjs/charts/half_second_90_users/}{./yjs/charts/quarter_second_90_users/}{./yjs/charts/half_second_180_users/}{./sharedb/charts/half_second_90_users/}{./sharedb/charts/quarter_second_90_users/}{./sharedb/charts/half_second_180_users/} }
+\graphicspath{ {./assets/}{./yjs/charts/half_second_90_users/}{./yjs/charts/quarter_second_90_users/}{./yjs/charts/half_second_180_users/}{./sharedb/charts/half_second_90_users/}{./sharedb/charts/quarter_second_90_users/}{./sharedb/charts/half_second_180_users/} }
 
 \setlength{\oddsidemargin}{7pt}
 \setlength{\textwidth}{438pt}
@@ -340,9 +340,6 @@
     \item Offline collaboration over a local network can be more difficult to implement as one or more of the peers needs to act as a server.
   \end{itemize}
 
-  \subsection{Popular OT Algorithms}
-  TBC
-
   \section{CRDT and OT Comparison}
   We have explored two different methodologies along with their implementations for Near-real time collaboration, CRDT (YATA or YJS) and
   Operational Transformation (Google Docs). Below we discuss some of the advantages and disadvantages of each of these approaches.
@@ -437,7 +434,7 @@
   This falls in line with the additional meta data requirement that exists for each client in YJS.
   In ShareDB the central server is the only process that maintains the information related to conflict resolution.
   This leads to a faster connectivity for clients in OT.
-  \subsubsection{YATA}
+  \subsubsection{YJS}
   \begin{center}
     \includegraphics[scale=0.48]{yjs_users_S1.png}
 
@@ -476,7 +473,7 @@
   number of clients. This is due to the fact that for YJS the total order is maintained by each client separately
   along with the server, as such due to the distributed nature of processing it is able to perform more conflict
   resolution operations per client, also leading to higher CPU utilization.
-  \subsubsection{YATA}
+  \subsubsection{YJS}
   \begin{center}
     \includegraphics[scale=0.48]{yjs_doc_size_S1.png}
 
@@ -506,12 +503,25 @@
     \textbf{Scenario C}
   \end{center}
 
+  Further looking at the below process information verifies that YJS has a higher per client CPU utilization. The top node process for both YJS and ShareDB is the server. The five node processes below in the list are the clients.
+  The average CPU utilization per client for YJS is higher than that of ShareDB.
+  
+  \subsubsection{YJS}
+  \begin{center}
+    \includegraphics[scale=0.60]{yjs_processes.png}
+  \end{center}
+
+  \subsubsection{ShareDB}
+  \begin{center}
+    \includegraphics[scale=0.60]{sharedb_processes.PNG}
+  \end{center}
+
   \subsection{Memory Utilization}
   Memory is the primary constraint for both YJS and ShareDB. The memory is fully utilized within few seconds
   of the start of analysis. This though generally works in favor of YJS due to the fact that it can perform
   updates in a distributed fashion. As when each user is connecting from their own machine then the server
   in the case of ShareDB becomes the bottleneck (as can be seen in the charts for document size).
-  \subsubsection{YATA}
+  \subsubsection{YJS}
   \begin{center}
     \includegraphics[scale=0.48]{yjs_memory_S1.png}
 
@@ -547,7 +557,7 @@
   Finally we zoom in to look at the actual text produced when we use only two clients inserting characters at quarter second intervals.
   This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the performance.
   The below snapshots of the documents produced are at the same time for each of YJS and ShareDB.
-  As we can see based on our algorithm YJS seems to clearly produce the more accurate document, in the case of ShareDB we see intermingling 
+  As we can see based on our algorithm YJS seems to clearly produce the more accurate document, in the case of ShareDB we see interleaving 
   of a lot more characters breaking the intention preservation requirement for a collaborative text editor.
   
   \subsubsection{YJS}
@@ -557,7 +567,8 @@
   yyxxwwvvuuttsrsrqpqopnomnlmkljkjihighfgfedecdbcab az yzxywxwvvutustrsqrpqopnonmmllkjkjiihghfgefdecdbcab az yzxywxvwuvtustrsqrpqopnomnlmkljkjihighgffeeddcbcab az zyyxxwwvvuuttssrrqqppoonnmmllkjkijihhggfefeddccbbaa \ zzyyxxwwvvututsrsqrqpopnomnlmkljkijhighfgefdecdbcab a zzyyxxwwvuvtustrsqrpqopnomnlmkljkijhighfgefdecdbc1ba0
 
   \section{Conclusion}
-  The YATA approach resolves many of the short-comings of other NRT collaboration approaches.
-  It can be utilized to represent a multitude of data types and hence can cater for a wide range of applications.
-  YJS is the most popular implementation of YATA, though it adds many optimizations beyond the core.
+  The CRDT implementation in YJS has it's advantages when compared to traditional Operational Transformation based approaches, but it also has disadvantages when compared along some performance dimensions.
+  Based on our testing and analysis, YJS should be the preferred library for NRT collaboration when intention preservation is of the utmost importance or when offline P2P collaboration needs to be supported.
+  In other cases, operational transformation at this stage seems to perform well specially for a larger number of clients. Hence when client connectivity is of the utmost importance then ShareDB should be preferred.
+
 \end{document}
