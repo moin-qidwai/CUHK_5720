@@ -25,7 +25,7 @@ const yText = ydoc.getText('test')
 information.push({
   elapsed: elapsed_time(),
   number_of_clients: number_of_users,
-  text:  yText.toString().length,
+  text:  yText.toString(),
   free_memory: os.freemem(),
   total_memory: os.totalmem() - os.freemem(),
   idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
@@ -43,7 +43,7 @@ awareness.on('change', _ => {
           information.push({
               elapsed: elapsed_time(),
               number_of_clients: number_of_users,
-              text: yText.toString().length,
+              text: yText.toString(),
               free_memory: os.freemem(),
               total_memory: os.totalmem() - os.freemem(),
               idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),

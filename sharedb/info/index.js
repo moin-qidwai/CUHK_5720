@@ -26,7 +26,7 @@ doc.subscribe(function(error) {
     information.push({
         elapsed: elapsed_time(),
         number_of_clients: number_of_users,
-        text:  doc.data.ops[0].insert.length,
+        text:  doc.data.ops[0].insert,
         free_memory: os.freemem(),
         total_memory: os.totalmem() - os.freemem(),
         idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
@@ -47,7 +47,7 @@ doc.subscribe(function(error) {
                 information.push({
                     elapsed: elapsed_time(),
                     number_of_clients: number_of_users,
-                    text: doc.data.ops[0].insert.length,
+                    text: doc.data.ops[0].insert,
                     free_memory: os.freemem(),
                     total_memory: os.totalmem() - os.freemem(),
                     idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
