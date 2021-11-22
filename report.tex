@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\graphicspath{ {./yjs/charts/one_millisecond_del_60_users/}{./yjs/charts/one_millisecond_60_users/}{./yjs/charts/one_second_90_users/}{./yjs/charts/one_second_200_users/}{./yjs/charts/ten_seconds_90_users/} }
+\graphicspath{ {./yjs/charts/half_second_90_users/}{./yjs/charts/quarter_second_90_users/}{./yjs/charts/half_second_180_users/}{./sharedb/charts/half_second_90_users/}{./sharedb/charts/quarter_second_90_users/}{./sharedb/charts/half_second_180_users/} }
 
 \setlength{\oddsidemargin}{7pt}
 \setlength{\textwidth}{438pt}
@@ -393,6 +393,29 @@
   \end{itemize}
 
   \section*{Benchmarks}
+  In order to analyze and compare the performance of OT and CRDTs, we have created separate applications to benchmark ShareDB (a OT implementation) and YJS (a CRDT implementation).
+  Both of these applications share the same structure, are written in javascript and executed using the same versions of node on the same cloud host.
+  In order to make the comparison fair we are also utilizing the same algorithm for inserting characters to the document. The algorithm is described below in brief.
+
+  \subsection{Algorithm}
+  Each client inserts a character at the head of the document at set intervals. The intervals are different for each scenario but uniform across both YJS and ShareDB for that scenario (see below for different scenarios).
+  Each client is also assigned an ID, the ID is a unique numeric value from 0 to N, where N is the number of clients - 1.
+  If we represent time in terms of the number of characters inserted and label it using \(t\), then at time \(t\) we select the character to insert as follows.
+  
+  \begin{equation} \label{insertion_algorithm_character}
+    Char(t, id) =
+    \left\{
+	    \begin{array}{ll}
+		    id\ mod\ 10 & \mbox{if } t < id \\
+        alphabet[(id\ +\ index)\ mod\ 27] & \mbox{otherwise }
+	    \end{array}
+    \right.
+  \end{equation}
+
+  The alphabet list in equation (\ref{insertion_algorithm_character}) consists of the English alphabets with the space character at the end.
+  Hence we have used modulo 27 to cycle through this list. This algorithm produces a very high conflict rate but also ensures each client 
+  produces a unique string based on their ID.
+
   \subsection{Scenarios}
   The below table shows the setup for each scenario, the frequency indicates the number of characters 
   inserted or deleted per second and the users column shows the number of concurrent users.\\
@@ -401,23 +424,20 @@
     \hline
     Scenario & Type & Frequency & Users \\ [0.5ex] 
     \hline\hline
-    A & Insert & 1000 & 60 \\ 
+    A & Insert & 2 & 90 \\ 
     \hline
-    B & Insert & 1 & 90 \\
+    B & Insert & 4 & 90 \\
     \hline
-    C & Insert & 1 & 200 \\
-    \hline
-    D & Insert & 0.1 & 90 \\
-    \hline
-    E & Delete & 1000 & 60 \\ [1ex] 
+    C & Insert & 2 & 180 \\
     \hline
   \end{tabular}
 
   \subsection{Number Of Users}
+  The below graphs indicate a lower performance for user/client connectivity in the case of YJS.
+  This falls in line with the additional meta data requirement that exists for each client in YJS.
+  In ShareDB the central server is the only process that maintains the information related to conflict resolution.
+  This leads to a faster connectivity for clients in OT.
   \subsubsection{YATA}
-  Observe that the clients are being terminated by the OS due to low memory.
-  This falls in line with our expectation of memory being a significant constraint on CRDT performance.
-  \\\\
   \begin{center}
     \includegraphics[scale=0.48]{yjs_users_S1.png}
 
@@ -431,47 +451,67 @@
     
     \textbf{Scenario C}
 
-    \includegraphics[scale=0.48]{yjs_users_S4.png}
-    
-    \textbf{Scenario D}
-    
-    \includegraphics[scale=0.48]{yjs_users_S5.png}
-    
-    \textbf{Scenario E}
   \end{center}
 
-  \subsection{CPU Utilization}
-  \subsubsection{YATA}
-  Observe that CPU utilization is highly correlated to the document size.
-  This is due to the fact that as the size of the document increases the number of potential conflicts increases as well.
-  As computation resource is required to process each conflict the CPU utilization increases.
-  \\\\
+  \subsubsection{ShareDB}
   \begin{center}
-    \includegraphics[scale=0.48]{yjs_cpu_S1.png}
+    \includegraphics[scale=0.48]{sharedb_users_S1.png}
 
     \textbf{Scenario A}
     
-    \includegraphics[scale=0.48]{yjs_cpu_S2.png}
+    \includegraphics[scale=0.48]{sharedb_users_S2.png}
     
     \textbf{Scenario B}
     
-    \includegraphics[scale=0.48]{yjs_cpu_S3.png}
+    \includegraphics[scale=0.48]{sharedb_users_S3.png}
     
     \textbf{Scenario C}
 
-    \includegraphics[scale=0.48]{yjs_cpu_S4.png}
+  \end{center}
+
+  \subsection{CPU Utilization/Document Size}
+  The CPU utilization is much higher in the case of YJS, and the rate of document updates overall seems slower.
+  This may come as a surprise but it is important to note that for YJS the document updates happen while
+  clients are connecting. As such YJS is able to process more updates as compared to ShareDB with much lower
+  number of clients. This is due to the fact that for YJS the total order is maintained by each client separately
+  along with the server, as such due to the distributed nature of processing it is able to perform more conflict
+  resolution operations per client, also leading to higher CPU utilization.
+  \subsubsection{YATA}
+  \begin{center}
+    \includegraphics[scale=0.48]{yjs_doc_size_S1.png}
+
+    \textbf{Scenario A}
     
-    \textbf{Scenario D}
+    \includegraphics[scale=0.48]{yjs_doc_size_S2.png}
     
-    \includegraphics[scale=0.48]{yjs_cpu_S5.png}
+    \textbf{Scenario B}
     
-    \textbf{Scenario E}
+    \includegraphics[scale=0.48]{yjs_doc_size_S3.png}
+    
+    \textbf{Scenario C}
+  \end{center}
+
+  \subsubsection{ShareDB}
+  \begin{center}
+    \includegraphics[scale=0.48]{sharedb_doc_size_S1.png}
+
+    \textbf{Scenario A}
+    
+    \includegraphics[scale=0.48]{sharedb_doc_size_S2.png}
+    
+    \textbf{Scenario B}
+    
+    \includegraphics[scale=0.48]{sharedb_doc_size_S3.png}
+    
+    \textbf{Scenario C}
   \end{center}
 
   \subsection{Memory Utilization}
+  Memory is the primary constraint for both YJS and ShareDB. The memory is fully utilized within few seconds
+  of the start of analysis. This though generally works in favor of YJS due to the fact that it can perform
+  updates in a distributed fashion. As when each user is connecting from their own machine then the server
+  in the case of ShareDB becomes the bottleneck (as can be seen in the charts for document size).
   \subsubsection{YATA}
-  As can be observed, the available memory trends towards zero with time while the utilized memory trends towards 2GB.
-  \\\\
   \begin{center}
     \includegraphics[scale=0.48]{yjs_memory_S1.png}
 
@@ -485,14 +525,36 @@
     
     \textbf{Scenario C}
 
-    \includegraphics[scale=0.48]{yjs_memory_S4.png}
-    
-    \textbf{Scenario D}
-    
-    \includegraphics[scale=0.48]{yjs_memory_S5.png}
-    
-    \textbf{Scenario E}
   \end{center}
+
+  \subsubsection{ShareDB}
+  \begin{center}
+    \includegraphics[scale=0.48]{sharedb_memory_S1.png}
+
+    \textbf{Scenario A}
+    
+    \includegraphics[scale=0.48]{sharedb_memory_S2.png}
+    
+    \textbf{Scenario B}
+    
+    \includegraphics[scale=0.48]{sharedb_memory_S3.png}
+    
+    \textbf{Scenario C}
+    
+  \end{center}
+
+  \subsection{Document Text}
+  Finally we zoom in to look at the actual text produced when we use only two clients inserting characters at quarter second intervals.
+  This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the performance.
+  The below snapshots of the documents produced are at the same time for each of YJS and ShareDB.
+  As we can see based on our algorithm YJS seems to clearly produce the more accurate document, in the case of ShareDB we see intermingling 
+  of a lot more characters breaking the intention preservation requirement for a collaborative text editor.
+  
+  \subsubsection{YJS}
+  yyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddcc1bba0
+
+  \subsubsection{ShareDB}
+  yyxxwwvvuuttsrsrqpqopnomnlmkljkjihighfgfedecdbcab az yzxywxwvvutustrsqrpqopnonmmllkjkjiihghfgefdecdbcab az yzxywxvwuvtustrsqrpqopnomnlmkljkjihighgffeeddcbcab az zyyxxwwvvuuttssrrqqppoonnmmllkjkijihhggfefeddccbbaa \ zzyyxxwwvvututsrsqrqpopnomnlmkljkijhighfgefdecdbcab a zzyyxxwwvuvtustrsqrpqopnomnlmkljkijhighfgefdecdbc1ba0
 
   \section{Conclusion}
   The YATA approach resolves many of the short-comings of other NRT collaboration approaches.

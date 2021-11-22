@@ -1,4 +1,4 @@
-info = HalfSecondOneEightyUserData
+info = QuarterSecondNinetyUserData
 
 var unique = [info[0]];
 var last_value = Math.floor(info[0].elapsed)
