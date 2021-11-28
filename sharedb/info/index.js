@@ -54,7 +54,7 @@ doc.subscribe(function(error) {
                 //     used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) - cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
                 // });
 
-                if (doc.data.ops[0].insert.length > 1000) {
+                if (doc.data.ops[0].insert.length > 100) {
                     fs.writeFile('accuracy.txt', calculateAccuracy(doc.data.ops[0].insert)+'', (err) => {
                         if (err) return console.log(err);
                         console.log('File updated');
