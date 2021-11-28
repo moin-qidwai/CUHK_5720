@@ -78,9 +78,11 @@ function calculateAccuracy(str) {
     const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
     const text = ReverseString(str).substr(0, 1000);
+    console.log(text);
+    const n_clients = parseInt(process.argv[2]);
 
     for (var i = 0; i < text.length; i++) {
-        const t = alphabets[Math.ceil((i%(3*26)+1)/3)-1];
+        const t = alphabets[Math.ceil((i%(n_clients*26)+1)/n_clients)-1];
         if (t !== text[i]) {
             error++;
         }
