@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {0..90}
+for i in {0..9}
 do
   echo "executing insertion client number $i...\n"
   node insert.js $i &

@@ -31,6 +31,6 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
             const value = alphabets[(id + index) % 26];
             doc.submitOp([{insert: value}]);
             index++;
-        }, 1000);
+        }, 100);
     });
 }
