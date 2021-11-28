@@ -22,15 +22,15 @@ const awareness = websocketProvider.awareness;
 
 const yText = ydoc.getText('test')
 
-information.push({
-  elapsed: elapsed_time(),
-  number_of_clients: number_of_users,
-  text:  yText.toString(),
-  free_memory: os.freemem(),
-  total_memory: os.totalmem() - os.freemem(),
-  idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-  used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-});
+// information.push({
+//   elapsed: elapsed_time(),
+//   number_of_clients: number_of_users,
+//   text:  yText.toString(),
+//   free_memory: os.freemem(),
+//   total_memory: os.totalmem() - os.freemem(),
+//   idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+//   used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) -cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+// });
 
 awareness.on('change', _ => {
   // Whenever somebody updates their awareness information,
@@ -40,21 +40,24 @@ awareness.on('change', _ => {
       first_connected = true;
 
       setInterval(function() {
-          information.push({
-              elapsed: elapsed_time(),
-              number_of_clients: number_of_users,
-              text: yText.toString(),
-              free_memory: os.freemem(),
-              total_memory: os.totalmem() - os.freemem(),
-              idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
-              used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) - cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
-          });
+          // information.push({
+          //     elapsed: elapsed_time(),
+          //     number_of_clients: number_of_users,
+          //     text: yText.toString(),
+          //     free_memory: os.freemem(),
+          //     total_memory: os.totalmem() - os.freemem(),
+          //     idle_cpu: os.cpus().map(cpu => cpu.times.idle).reduce((prev, curr) => prev+curr, 0),
+          //     used_cpu: os.cpus().map(cpu => (cpu.times.sys + cpu.times.user + cpu.times.idle + cpu.times.irq) - cpu.times.idle).reduce((prev, curr) => prev+curr, 0)
+          // });
   
-          fs.writeFile('information.json', JSON.stringify(information), (err) => {
-              if (err) return console.log(err);
-              console.log('File updated');
-          });
-      }, 5000);
+          if (yText.toString().length > 1000) {
+            fs.writeFile('accuracy.txt', calculateAccuracy(yText.toString())+'', (err) => {
+                if (err) return console.log(err);
+                console.log('File updated');
+                process.exit(0);
+            });
+          }
+      }, 10000);
   }
 });
 
@@ -65,3 +68,23 @@ function elapsed_time() {
   return tm;
 }
 
+function calculateAccuracy(str) {
+  var error = 0;
+  const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+  const text = ReverseString(str).substr(0, 1000);
+
+  for (var i = 0; i < text.length; i++) {
+      const t = alphabets[Math.ceil((i%(3*26)+1)/3)-1];
+      if (t !== text[i]) {
+          error++;
+      }
+  }
+  
+  const result = (1 - error/text.length)*100;
+  return result;
+}
+
+function ReverseString(str) {
+  return str.split('').reverse().join('')
+}

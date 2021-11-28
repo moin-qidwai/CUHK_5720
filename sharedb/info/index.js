@@ -55,10 +55,10 @@ doc.subscribe(function(error) {
                 // });
 
                 if (doc.data.ops[0].insert.length > 1000) {
-                    fs.writeFile('accuracy.txt', calculateAccuracy(doc.data.ops[0].insert), (err) => {
+                    fs.writeFile('accuracy.txt', calculateAccuracy(doc.data.ops[0].insert)+'', (err) => {
                         if (err) return console.log(err);
                         console.log('File updated');
-                        process.exit(0)
+                        process.exit(0);
                     });
                 }
             }, 10000);
