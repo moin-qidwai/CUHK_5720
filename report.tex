@@ -367,7 +367,7 @@
   \subsubsection{Advantages}
   \begin{itemize}
     \item Any operation can be supported as long as it's transformations can be defined.
-    \item Due to their greater prevalence in real world applications at present they have broader support.
+    \item As they are far more mature in the real world, they are currently highly optimized for popular applications.
   \end{itemize}
 
   \subsubsection{Disadvantages}
@@ -385,7 +385,7 @@
   The tests have been performed on a cloud based compute instance from Digital Ocean.
   The specifications are as shown below:
   \begin{itemize}
-    \item CPU: 2600 MHz (Quad Core)
+    \item CPU: 2600 MHz Per Core (Quad Core)
     \item Memory: 16 GB
   \end{itemize}
 
@@ -505,7 +505,7 @@
   Previously we have looked at the hardware resource utilization per client for both YJS and ShareDB. In such comparisons as noted ShareDB does
   perform slightly better than YJS. Now we zoom in to look at the accuracy of the actual text produced when inserting characters.
   This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the "quantity".
-  We define a accuracy metric based on a simpler version of our insertion algorithm as shown in the below equation
+  We define a accuracy metric based on a simpler version of our insertion algorithm as shown in the below equations
 
   \begin{equation} \label{simple_insertion_algorithm_character}
     Char(index, id) = alphabet[index\ mod\ 26]
@@ -529,17 +529,60 @@
     \right.
   \end{equation}
 
-  The indices in equations above start from 0 and alphabet is the list of alphabet a to z, in ascending order.
+  \textbf{The indices in equations above start from 0 and alphabet is the list of alphabet a to z, in ascending order.}
   
-  \subsubsection{YJS}
-  yyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddcc1bba0
+  The below table shows the test runs and their accuracy for both YJS and ShareDB. Each of these tests were run in isolation on
+  the same cloud host described above in the performance evaluation section.\\
 
-  \subsubsection{ShareDB}
-  yyxxwwvvuuttsrsrqpqopnomnlmkljkjihighfgfedecdbcab az yzxywxwvvutustrsqrpqopnonmmllkjkjiihghfgefdecdbcab az yzxywxvwuvtustrsqrpqopnomnlmkljkjihighgffeeddcbcab az zyyxxwwvvuuttssrrqqppoonnmmllkjkijihhggfefeddccbbaa \ zzyyxxwwvvututsrsqrqpopnomnlmkljkijhighfgefdecdbcab a zzyyxxwwvuvtustrsqrpqopnomnlmkljkijhighfgefdecdbc1ba0
+  \begin{tabular}{||c c c||} 
+    \hline
+    Test Number & Accuracy (\%) - ShareDB & Accuracy (\%) - YJS \\ [0.5ex] 
+    \hline\hline
+    1 & 99.92 & 70.06 \\ 
+    \hline
+    2 & 92.83 & 70.53 \\
+    \hline
+    3 & 86.35 & 50.79 \\
+    \hline
+    4 & 24.08 & 51.61 \\
+    \hline
+    5 & 99.86 & 66.36 \\
+    \hline
+    6 & 92.11 & 54.69 \\
+    \hline
+    7 & 47.83 & 64.51 \\
+    \hline
+    8 & 91.95 & 72.77 \\
+    \hline
+    9 & 59.97 & 88.03 \\
+    \hline
+    10 & 58.73 & 64.30 \\
+    \hline
+  \end{tabular}
+  \\
 
+  The below table further provides common statistical measures for the above dataset.\\
+
+  \begin{tabular}{||c c c c c c||} 
+    \hline
+    Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+    \hline\hline
+    ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+    \hline
+    YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+    \hline
+  \end{tabular}
+ 
   \section{Conclusion}
-  The CRDT implementation in YJS has it's advantages when compared to traditional Operational Transformation based approaches, but it also has disadvantages when compared along some performance dimensions.
-  Based on our testing and analysis, YJS should be the preferred library for NRT collaboration when intention preservation is of the utmost importance or when offline P2P collaboration needs to be supported.
-  In other cases, operational transformation at this stage seems to perform well specially for a larger number of clients. Hence when client connectivity is of the utmost importance then ShareDB should be preferred.
+  The CRDT implementation in YJS has generally held up against the more mature traditional Operational Transformation based approaches,
+  but it has disadvantages when compared along some performance dimensions.
+  Based on our testing and analysis, YJS has a better minimum quality with regards to intention preservation,
+  hence when reliability on data quality is important it may be considered.
+  Ofcourse it's most popular use case may still remain to be offline P2P collaboration as that is simply not supported in ShareDB.
+  In other cases, operational transformation at this stage seems to perform well specially for a larger number of clients.
+  Hence when client connectivity is of the utmost importance then ShareDB should be preferred.
+
+  As CRDT based approaches become more prevalent and receive further attention in the research community their performance should improve.
+  We will further look at garbage collection and undo/redo capabilities in our next report.
 
 \end{document}
