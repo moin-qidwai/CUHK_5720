@@ -1,0 +1,222 @@
+const ScenarioData = [
+    {
+        "time": 1,
+        "clients_sharedb": 0,
+        "clients_yjs": 0,
+        "doc_size_sharedb": 0,
+        "doc_size_yjs": 0,
+        "free_memory_sharedb": 16162304000,
+        "free_memory_yjs": 16254214144,
+        "idle_cpu_sharedb": 1,
+        "idle_cpu_yjs": 0.9875930521091811
+    },
+    {
+        "time": 2,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 562,
+        "doc_size_yjs": 581,
+        "free_memory_sharedb": 15101317120,
+        "free_memory_yjs": 15044509696,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.5076530612244898
+    },
+    {
+        "time": 3,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 1072,
+        "doc_size_yjs": 1076,
+        "free_memory_sharedb": 15046676480,
+        "free_memory_yjs": 14992584704,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.3853904282115869
+    },
+    {
+        "time": 4,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 1582,
+        "doc_size_yjs": 1595,
+        "free_memory_sharedb": 15035621376,
+        "free_memory_yjs": 14868430848,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.6506329113924051
+    },
+    {
+        "time": 5,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 2092,
+        "doc_size_yjs": 2104,
+        "free_memory_sharedb": 15090909184,
+        "free_memory_yjs": 14763216896,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.5316455696202531
+    },
+    {
+        "time": 6,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 2601,
+        "doc_size_yjs": 2612,
+        "free_memory_sharedb": 15065690112,
+        "free_memory_yjs": 14740267008,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.6879795396419437
+    },
+    {
+        "time": 7,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 3101,
+        "doc_size_yjs": 3111,
+        "free_memory_sharedb": 15058792448,
+        "free_memory_yjs": 14720622592,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.6381909547738693
+    },
+    {
+        "time": 8,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 3601,
+        "doc_size_yjs": 3609,
+        "free_memory_sharedb": 15049818112,
+        "free_memory_yjs": 14702768128,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.6070528967254408
+    },
+    {
+        "time": 9,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 4101,
+        "doc_size_yjs": 4113,
+        "free_memory_sharedb": 15044706304,
+        "free_memory_yjs": 14691745792,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.5819070904645477
+    },
+    {
+        "time": 10,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 4601,
+        "doc_size_yjs": 4608,
+        "free_memory_sharedb": 15049134080,
+        "free_memory_yjs": 14673215488,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7216494845360825
+    },
+    {
+        "time": 11,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 5100,
+        "doc_size_yjs": 5108,
+        "free_memory_sharedb": 15045754880,
+        "free_memory_yjs": 14664605696,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7167919799498746
+    },
+    {
+        "time": 12,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 5600,
+        "doc_size_yjs": 5608,
+        "free_memory_sharedb": 15034789888,
+        "free_memory_yjs": 14654734336,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7386934673366834
+    },
+    {
+        "time": 13,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 6100,
+        "doc_size_yjs": 6108,
+        "free_memory_sharedb": 15038627840,
+        "free_memory_yjs": 14648627200,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7627551020408163
+    },
+    {
+        "time": 14,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 6600,
+        "doc_size_yjs": 6608,
+        "free_memory_sharedb": 15038586880,
+        "free_memory_yjs": 14641758208,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7092731829573935
+    },
+    {
+        "time": 15,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 7100,
+        "doc_size_yjs": 7108,
+        "free_memory_sharedb": 15034564608,
+        "free_memory_yjs": 14634872832,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7341772151898734
+    },
+    {
+        "time": 16,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 7600,
+        "doc_size_yjs": 7607,
+        "free_memory_sharedb": 15034789888,
+        "free_memory_yjs": 14625009664,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7614213197969543
+    },
+    {
+        "time": 17,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 8100,
+        "doc_size_yjs": 8107,
+        "free_memory_sharedb": 15024676864,
+        "free_memory_yjs": 14619275264,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7272727272727273
+    },
+    {
+        "time": 18,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 8600,
+        "doc_size_yjs": 8607,
+        "free_memory_sharedb": 15023710208,
+        "free_memory_yjs": 14613139456,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7544303797468355
+    },
+    {
+        "time": 19,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 9100,
+        "doc_size_yjs": 9107,
+        "free_memory_sharedb": 15018606592,
+        "free_memory_yjs": 14608601088,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.7330097087378641
+    },
+    {
+        "time": 20,
+        "clients_sharedb": 50,
+        "clients_yjs": 50,
+        "doc_size_sharedb": 9600,
+        "doc_size_yjs": 9607,
+        "free_memory_sharedb": 15017865216,
+        "free_memory_yjs": 14595923968,
+        "idle_cpu_sharedb": 0.48756218905472637,
+        "idle_cpu_yjs": 0.6882793017456359
+    }
+]

@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
-\graphicspath{ {./assets/}{./yjs/charts/half_second_90_users/}{./yjs/charts/quarter_second_90_users/}{./yjs/charts/half_second_180_users/}{./sharedb/charts/half_second_90_users/}{./sharedb/charts/quarter_second_90_users/}{./sharedb/charts/half_second_180_users/} }
+\graphicspath{ {./assets/} }
 
 \setlength{\oddsidemargin}{7pt}
 \setlength{\textwidth}{438pt}
@@ -385,8 +385,8 @@
   The tests have been performed on a cloud based compute instance from Digital Ocean.
   The specifications are as shown below:
   \begin{itemize}
-    \item CPU: 500 MHz (Single Core)
-    \item Memory: 2 GB
+    \item CPU: 2600 MHz (Quad Core)
+    \item Memory: 16 GB
   \end{itemize}
 
   \section*{Benchmarks}
@@ -403,7 +403,7 @@
     Char(t, id) =
     \left\{
 	    \begin{array}{ll}
-		    id\ mod\ 10 & \mbox{if } t < id \\
+		    id\ mod\ 10 & \mbox{if } t \equiv id \\
         alphabet[(id\ +\ index)\ mod\ 27] & \mbox{otherwise }
 	    \end{array}
     \right.
@@ -415,90 +415,56 @@
 
   \subsection{Scenarios}
   The below table shows the setup for each scenario, the frequency indicates the number of characters 
-  inserted or deleted per second and the users column shows the number of concurrent users.\\
+  inserted per second and the users column shows the number of concurrent users.\\
 
-  \begin{tabular}{||c c c c||} 
+  \begin{tabular}{||c c c||} 
     \hline
-    Scenario & Type & Frequency & Users \\ [0.5ex] 
+    Scenario & Frequency & Users \\ [0.5ex] 
     \hline\hline
-    A & Insert & 2 & 90 \\ 
+    A & 2 & 50 \\ 
     \hline
-    B & Insert & 4 & 90 \\
+    B & 2 & 100 \\
     \hline
-    C & Insert & 2 & 180 \\
+    C & 10 & 50 \\
     \hline
   \end{tabular}
 
   \subsection{Number Of Users}
   The below graphs indicate a lower performance for user/client connectivity in the case of YJS.
-  This falls in line with the additional meta data requirement that exists for each client in YJS.
+  This falls in line with the additional meta data requirement and distributed conflict resolution that exists for each client in YJS.
   In ShareDB the central server is the only process that maintains the information related to conflict resolution.
-  This leads to a faster connectivity for clients in OT.
-  \subsubsection{YJS}
+  This leads to a faster connectivity for clients in OT and a slightly lower total cpu usage of the whole network.
+  It is worth noting that due to a higher total CPU utilization for YJS, the number of clients that were able to 
+  connect to the network was restricted. 
   \begin{center}
-    \includegraphics[scale=0.48]{yjs_users_S1.png}
+    \includegraphics[scale=0.48]{scenario_a/users.png}
 
     \textbf{Scenario A}
     
-    \includegraphics[scale=0.48]{yjs_users_S2.png}
+    \includegraphics[scale=0.48]{scenario_b/users.png}
     
     \textbf{Scenario B}
     
-    \includegraphics[scale=0.48]{yjs_users_S3.png}
+    \includegraphics[scale=0.48]{scenario_c/users.png}
     
     \textbf{Scenario C}
 
   \end{center}
 
-  \subsubsection{ShareDB}
+  \subsection{Document Size}
+  The performance for conflict resolution can be seen using the change in document size (pace of character insertions).
+  Interestingly when the CPU is not fully utilized (Scenario A) the performance for both ShareDB and YJS is the same.
+  Though once we fully utilize the CPU (Scenario C), the performance of ShareDB is better by a large margin.
   \begin{center}
-    \includegraphics[scale=0.48]{sharedb_users_S1.png}
+    \includegraphics[scale=0.48]{scenario_a/document.png}
 
     \textbf{Scenario A}
     
-    \includegraphics[scale=0.48]{sharedb_users_S2.png}
+    \includegraphics[scale=0.48]{scenario_b/document.png}
     
     \textbf{Scenario B}
     
-    \includegraphics[scale=0.48]{sharedb_users_S3.png}
-    
-    \textbf{Scenario C}
-
-  \end{center}
-
-  \subsection{CPU Utilization/Document Size}
-  The CPU utilization is much higher in the case of YJS, and the rate of document updates overall seems slower.
-  This may come as a surprise but it is important to note that for YJS the document updates happen while
-  clients are connecting. As such YJS is able to process more updates as compared to ShareDB with much lower
-  number of clients. This is due to the fact that for YJS the total order is maintained by each client separately
-  along with the server, as such due to the distributed nature of processing it is able to perform more conflict
-  resolution operations per client, also leading to higher CPU utilization.
-  \subsubsection{YJS}
-  \begin{center}
-    \includegraphics[scale=0.48]{yjs_doc_size_S1.png}
-
-    \textbf{Scenario A}
-    
-    \includegraphics[scale=0.48]{yjs_doc_size_S2.png}
-    
-    \textbf{Scenario B}
-    
-    \includegraphics[scale=0.48]{yjs_doc_size_S3.png}
-    
-    \textbf{Scenario C}
-  \end{center}
-
-  \subsubsection{ShareDB}
-  \begin{center}
-    \includegraphics[scale=0.48]{sharedb_doc_size_S1.png}
-
-    \textbf{Scenario A}
-    
-    \includegraphics[scale=0.48]{sharedb_doc_size_S2.png}
-    
-    \textbf{Scenario B}
-    
-    \includegraphics[scale=0.48]{sharedb_doc_size_S3.png}
+    \includegraphics[scale=0.48]{scenario_c/document.png}
     
     \textbf{Scenario C}
   \end{center}
@@ -517,48 +483,53 @@
   \end{center}
 
   \subsection{Memory Utilization}
-  Memory is the primary constraint for both YJS and ShareDB. The memory is fully utilized within few seconds
-  of the start of analysis. This though generally works in favor of YJS due to the fact that it can perform
-  updates in a distributed fashion. As when each user is connecting from their own machine then the server
-  in the case of ShareDB becomes the bottleneck (as can be seen in the charts for document size).
-  \subsubsection{YJS}
+  Memory utilization is quite similar for both YJS and ShareDB, though a bit higher for YJS. This is also due to the fact that
+  in CRDT approaches each client must maintain additional meta data for the document contents. Though generally this is not a 
+  major issue as YJS is created for distributed utilization and hence the memory utilization is also distributed on several machines.
   \begin{center}
-    \includegraphics[scale=0.48]{yjs_memory_S1.png}
+    \includegraphics[scale=0.48]{scenario_a/memory.png}
 
     \textbf{Scenario A}
     
-    \includegraphics[scale=0.48]{yjs_memory_S2.png}
+    \includegraphics[scale=0.48]{scenario_b/memory.png}
     
     \textbf{Scenario B}
     
-    \includegraphics[scale=0.48]{yjs_memory_S3.png}
+    \includegraphics[scale=0.48]{scenario_c/memory.png}
     
     \textbf{Scenario C}
 
   \end{center}
 
-  \subsubsection{ShareDB}
-  \begin{center}
-    \includegraphics[scale=0.48]{sharedb_memory_S1.png}
+  \subsection{Accuracy}
+  Previously we have looked at the hardware resource utilization per client for both YJS and ShareDB. In such comparisons as noted ShareDB does
+  perform slightly better than YJS. Now we zoom in to look at the accuracy of the actual text produced when inserting characters.
+  This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the "quantity".
+  We define a accuracy metric based on a simpler version of our insertion algorithm as shown in the below equation
 
-    \textbf{Scenario A}
-    
-    \includegraphics[scale=0.48]{sharedb_memory_S2.png}
-    
-    \textbf{Scenario B}
-    
-    \includegraphics[scale=0.48]{sharedb_memory_S3.png}
-    
-    \textbf{Scenario C}
-    
-  \end{center}
+  \begin{equation} \label{simple_insertion_algorithm_character}
+    Char(index, id) = alphabet[index\ mod\ 26]
+  \end{equation}
 
-  \subsection{Document Text}
-  Finally we zoom in to look at the actual text produced when we use only two clients inserting characters at quarter second intervals.
-  This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the performance.
-  The below snapshots of the documents produced are at the same time for each of YJS and ShareDB.
-  As we can see based on our algorithm YJS seems to clearly produce the more accurate document, in the case of ShareDB we see interleaving 
-  of a lot more characters breaking the intention preservation requirement for a collaborative text editor.
+  \begin{equation} \label{overall_accuracy_measure}
+    Accuracy(text, clients) = 100 - ErrorRate(text, clients)
+  \end{equation}
+
+  \begin{equation} \label{overall_accuracy_measure}
+    ErrorRate(text, clients) = (\sum Err(text[index], index, clients)) \div length(text)
+  \end{equation}
+
+  \begin{equation} \label{error_calculation}
+    Err(c, i, n) = 
+    \left\{
+	    \begin{array}{ll}
+        1 & \mbox{if } alphabet[ceil(((i\ mod\ n * 26) + 1) \div n)-1] \neq c \\
+        0 & \mbox{otherwise }
+	    \end{array}
+    \right.
+  \end{equation}
+
+  The indices in equations above start from 0 and alphabet is the list of alphabet a to z, in ascending order.
   
   \subsubsection{YJS}
   yyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa \ zzyyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddcc1bba0

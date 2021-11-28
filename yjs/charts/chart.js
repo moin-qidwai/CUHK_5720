@@ -1,4 +1,4 @@
-info = HalfSecondOneEightyUserData
+info = ScenarioData
 
 var unique = [info[0]];
 var last_value = Math.floor(info[0].elapsed)
@@ -15,7 +15,7 @@ free_memory = unique.map(i => Math.floor(i.free_memory/1000000))
 used_memory = unique.map(i => Math.floor((i.total_memory - i.free_memory)/1000000)).map(i => i < 0 ? 0 : i)
 number_of_users = unique.map(i => i.number_of_clients)
 document_size = unique.map(i => i.text)
-used_cpus = unique.map(i => i.used_cpu)
+idle_cpus = unique.map(i => i.idle_cpu)
 elapsed = unique.map(i => Math.floor(i.elapsed))
 
 bb.generate({
@@ -107,14 +107,14 @@ bb.generate({
         },
         y2: {
             show: true,
-            label: 'CPU Utilized (Cycles/s)'
+            label: 'CPU Available (Cycles/s)'
         }
     },
     data: {
         columns: [
             ["x", ...elapsed],
             ["Document_Size", ...document_size],
-            ["CPU_Used", ...used_cpus]
+            ["CPU_Idle", ...idle_cpus]
         ],
         types: {
             Document_Size: "line",

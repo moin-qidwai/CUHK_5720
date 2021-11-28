@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.9.26)  22 NOV 2021 17:51
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.9.26)  28 NOV 2021 17:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -46,7 +46,11 @@ File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 File: l3backend-pdfmode.def 2020-02-03 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count175
 \l__pdf_internal_box=\box45
-) (/home/moinqidw/Courses/CUHK/5720/report.aux)
+) (/home/moinqidw/Courses/CUHK/5720/report.aux
+
+LaTeX Warning: Label `overall_accuracy_measure' multiply defined.
+
+)
 \openout1 = `report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
@@ -133,159 +137,114 @@ Underfull \hbox (badness 10000) in paragraph at lines 417--419
  []
 
 [12]
-<./yjs/charts/half_second_90_users/yjs_users_S1.png, id=57, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_90_users/yjs_users_S1.png Graphic file (type png)
-<use ./yjs/charts/half_second_90_users/yjs_users_S1.png>
-Package pdftex.def Info: ./yjs/charts/half_second_90_users/yjs_users_S1.png  used on input line 439.
+<./assets/scenario_a/users.png, id=57, 903.375pt x 451.6875pt>
+File: ./assets/scenario_a/users.png Graphic file (type png)
+<use ./assets/scenario_a/users.png>
+Package pdftex.def Info: ./assets/scenario_a/users.png  used on input line 440.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./yjs/charts/quarter_second_90_users/yjs_users_S2.png, id=59, 903.375pt x 451.6875pt>
-File: ./yjs/charts/quarter_second_90_users/yjs_users_S2.png Graphic file (type png)
-<use ./yjs/charts/quarter_second_90_users/yjs_users_S2.png>
-Package pdftex.def Info: ./yjs/charts/quarter_second_90_users/yjs_users_S2.png  used on input line 443.
+<./assets/scenario_b/users.png, id=59, 903.375pt x 451.6875pt>
+File: ./assets/scenario_b/users.png Graphic file (type png)
+<use ./assets/scenario_b/users.png>
+Package pdftex.def Info: ./assets/scenario_b/users.png  used on input line 444.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [13 <./yjs/charts/half_second_90_users/yjs_users_S1.png>]
-<./yjs/charts/half_second_180_users/yjs_users_S3.png, id=66, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_180_users/yjs_users_S3.png Graphic file (type png)
-<use ./yjs/charts/half_second_180_users/yjs_users_S3.png>
-Package pdftex.def Info: ./yjs/charts/half_second_180_users/yjs_users_S3.png  used on input line 447.
+ [13 <./assets/scenario_a/users.png>]
+<./assets/scenario_c/users.png, id=66, 903.375pt x 451.6875pt>
+File: ./assets/scenario_c/users.png Graphic file (type png)
+<use ./assets/scenario_c/users.png>
+Package pdftex.def Info: ./assets/scenario_c/users.png  used on input line 448.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./sharedb/charts/half_second_90_users/sharedb_users_S1.png, id=67, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_90_users/sharedb_users_S1.png Graphic file (type png)
-<use ./sharedb/charts/half_second_90_users/sharedb_users_S1.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_90_users/sharedb_users_S1.png  used on input line 455.
+ [14 <./assets/scenario_b/users.png> <./assets/scenario_c/users.png>]
+<./assets/scenario_a/document.png, id=72, 903.375pt x 451.6875pt>
+File: ./assets/scenario_a/document.png Graphic file (type png)
+<use ./assets/scenario_a/document.png>
+Package pdftex.def Info: ./assets/scenario_a/document.png  used on input line 459.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [14 <./yjs/charts/quarter_second_90_users/yjs_users_S2.png> <./yjs/charts/half_second_180_users/yjs_users_S3.png>]
-<./sharedb/charts/quarter_second_90_users/sharedb_users_S2.png, id=73, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/quarter_second_90_users/sharedb_users_S2.png Graphic file (type png)
-<use ./sharedb/charts/quarter_second_90_users/sharedb_users_S2.png>
-Package pdftex.def Info: ./sharedb/charts/quarter_second_90_users/sharedb_users_S2.png  used on input line 459.
+<./assets/scenario_b/document.png, id=73, 903.375pt x 451.6875pt>
+File: ./assets/scenario_b/document.png Graphic file (type png)
+<use ./assets/scenario_b/document.png>
+Package pdftex.def Info: ./assets/scenario_b/document.png  used on input line 463.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./sharedb/charts/half_second_180_users/sharedb_users_S3.png, id=74, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_180_users/sharedb_users_S3.png Graphic file (type png)
-<use ./sharedb/charts/half_second_180_users/sharedb_users_S3.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_180_users/sharedb_users_S3.png  used on input line 463.
+<./assets/scenario_c/document.png, id=74, 903.375pt x 451.6875pt>
+File: ./assets/scenario_c/document.png Graphic file (type png)
+<use ./assets/scenario_c/document.png>
+Package pdftex.def Info: ./assets/scenario_c/document.png  used on input line 467.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [15 <./sharedb/charts/half_second_90_users/sharedb_users_S1.png> <./sharedb/charts/quarter_second_90_users/sharedb_users_S2.png>]
-<./yjs/charts/half_second_90_users/yjs_doc_size_S1.png, id=80, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_90_users/yjs_doc_size_S1.png Graphic file (type png)
-<use ./yjs/charts/half_second_90_users/yjs_doc_size_S1.png>
-Package pdftex.def Info: ./yjs/charts/half_second_90_users/yjs_doc_size_S1.png  used on input line 478.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [16 <./sharedb/charts/half_second_180_users/sharedb_users_S3.png>]
-<./yjs/charts/quarter_second_90_users/yjs_doc_size_S2.png, id=85, 903.375pt x 451.6875pt>
-File: ./yjs/charts/quarter_second_90_users/yjs_doc_size_S2.png Graphic file (type png)
-<use ./yjs/charts/quarter_second_90_users/yjs_doc_size_S2.png>
-Package pdftex.def Info: ./yjs/charts/quarter_second_90_users/yjs_doc_size_S2.png  used on input line 482.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./yjs/charts/half_second_180_users/yjs_doc_size_S3.png, id=86, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_180_users/yjs_doc_size_S3.png Graphic file (type png)
-<use ./yjs/charts/half_second_180_users/yjs_doc_size_S3.png>
-Package pdftex.def Info: ./yjs/charts/half_second_180_users/yjs_doc_size_S3.png  used on input line 486.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [17 <./yjs/charts/half_second_90_users/yjs_doc_size_S1.png> <./yjs/charts/quarter_second_90_users/yjs_doc_size_S2.png>]
-<./sharedb/charts/half_second_90_users/sharedb_doc_size_S1.png, id=92, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_90_users/sharedb_doc_size_S1.png Graphic file (type png)
-<use ./sharedb/charts/half_second_90_users/sharedb_doc_size_S1.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_90_users/sharedb_doc_size_S1.png  used on input line 493.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png, id=93, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png Graphic file (type png)
-<use ./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png>
-Package pdftex.def Info: ./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png  used on input line 497.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [18 <./yjs/charts/half_second_180_users/yjs_doc_size_S3.png> <./sharedb/charts/half_second_90_users/sharedb_doc_size_S1.png>]
-<./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png, id=99, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png Graphic file (type png)
-<use ./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png  used on input line 501.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./assets/yjs_processes.png, id=100, 594.72188pt x 104.64093pt>
+ [15 <./assets/scenario_a/document.png> <./assets/scenario_b/document.png>]
+<./assets/yjs_processes.png, id=80, 594.72188pt x 104.64093pt>
 File: ./assets/yjs_processes.png Graphic file (type png)
 <use ./assets/yjs_processes.png>
-Package pdftex.def Info: ./assets/yjs_processes.png  used on input line 511.
+Package pdftex.def Info: ./assets/yjs_processes.png  used on input line 477.
 (pdftex.def)             Requested size: 356.83588pt x 62.78502pt.
- [19 <./sharedb/charts/quarter_second_90_users/sharedb_doc_size_S2.png> <./sharedb/charts/half_second_180_users/sharedb_doc_size_S3.png>]
-<./assets/sharedb_processes.PNG, id=107, 542.025pt x 94.85437pt>
+<./assets/sharedb_processes.PNG, id=81, 542.025pt x 94.85437pt>
 File: ./assets/sharedb_processes.PNG Graphic file (type png)
 <use ./assets/sharedb_processes.PNG>
-Package pdftex.def Info: ./assets/sharedb_processes.PNG  used on input line 516.
+Package pdftex.def Info: ./assets/sharedb_processes.PNG  used on input line 482.
 (pdftex.def)             Requested size: 325.2175pt x 56.91304pt.
-<./yjs/charts/half_second_90_users/yjs_memory_S1.png, id=108, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_90_users/yjs_memory_S1.png Graphic file (type png)
-<use ./yjs/charts/half_second_90_users/yjs_memory_S1.png>
-Package pdftex.def Info: ./yjs/charts/half_second_90_users/yjs_memory_S1.png  used on input line 526.
+ [16 <./assets/scenario_c/document.png> <./assets/yjs_processes.png> <./assets/sharedb_processes.png>]
+<./assets/scenario_a/memory.png, id=88, 903.375pt x 451.6875pt>
+File: ./assets/scenario_a/memory.png Graphic file (type png)
+<use ./assets/scenario_a/memory.png>
+Package pdftex.def Info: ./assets/scenario_a/memory.png  used on input line 490.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [20 <./assets/yjs_processes.png> <./assets/sharedb_processes.png> <./yjs/charts/half_second_90_users/yjs_memory_S1.png>]
-<./yjs/charts/quarter_second_90_users/yjs_memory_S2.png, id=115, 903.375pt x 451.6875pt>
-File: ./yjs/charts/quarter_second_90_users/yjs_memory_S2.png Graphic file (type png)
-<use ./yjs/charts/quarter_second_90_users/yjs_memory_S2.png>
-Package pdftex.def Info: ./yjs/charts/quarter_second_90_users/yjs_memory_S2.png  used on input line 530.
+<./assets/scenario_b/memory.png, id=89, 903.375pt x 451.6875pt>
+File: ./assets/scenario_b/memory.png Graphic file (type png)
+<use ./assets/scenario_b/memory.png>
+Package pdftex.def Info: ./assets/scenario_b/memory.png  used on input line 494.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./yjs/charts/half_second_180_users/yjs_memory_S3.png, id=116, 903.375pt x 451.6875pt>
-File: ./yjs/charts/half_second_180_users/yjs_memory_S3.png Graphic file (type png)
-<use ./yjs/charts/half_second_180_users/yjs_memory_S3.png>
-Package pdftex.def Info: ./yjs/charts/half_second_180_users/yjs_memory_S3.png  used on input line 534.
+ [17 <./assets/scenario_a/memory.png> <./assets/scenario_b/memory.png>]
+<./assets/scenario_c/memory.png, id=95, 903.375pt x 451.6875pt>
+File: ./assets/scenario_c/memory.png Graphic file (type png)
+<use ./assets/scenario_c/memory.png>
+Package pdftex.def Info: ./assets/scenario_c/memory.png  used on input line 498.
 (pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./sharedb/charts/half_second_90_users/sharedb_memory_S1.png, id=117, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_90_users/sharedb_memory_S1.png Graphic file (type png)
-<use ./sharedb/charts/half_second_90_users/sharedb_memory_S1.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_90_users/sharedb_memory_S1.png  used on input line 542.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [21 <./yjs/charts/quarter_second_90_users/yjs_memory_S2.png> <./yjs/charts/half_second_180_users/yjs_memory_S3.png>]
-<./sharedb/charts/quarter_second_90_users/sharedb_memory_S2.png, id=123, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/quarter_second_90_users/sharedb_memory_S2.png Graphic file (type png)
-<use ./sharedb/charts/quarter_second_90_users/sharedb_memory_S2.png>
-Package pdftex.def Info: ./sharedb/charts/quarter_second_90_users/sharedb_memory_S2.png  used on input line 546.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
-<./sharedb/charts/half_second_180_users/sharedb_memory_S3.png, id=124, 903.375pt x 451.6875pt>
-File: ./sharedb/charts/half_second_180_users/sharedb_memory_S3.png Graphic file (type png)
-<use ./sharedb/charts/half_second_180_users/sharedb_memory_S3.png>
-Package pdftex.def Info: ./sharedb/charts/half_second_180_users/sharedb_memory_S3.png  used on input line 550.
-(pdftex.def)             Requested size: 433.61508pt x 216.80753pt.
- [22 <./sharedb/charts/half_second_90_users/sharedb_memory_S1.png> <./sharedb/charts/quarter_second_90_users/sharedb_memory_S2.png>]
-Overfull \hbox (0.48012pt too wide) in paragraph at lines 564--565
+
+Overfull \hbox (0.48012pt too wide) in paragraph at lines 535--536
 \T1/cmr/m/n/10.95 yyxxwwvvuuttssrrqqppoonnmmllkkjjiihhggffeeddccbbaa  zzyyxxwwvvu-uttss-r-rqqp-poon-n-mm-
  []
 
 
-Overfull \hbox (32.13501pt too wide) in paragraph at lines 564--565
+Overfull \hbox (32.13501pt too wide) in paragraph at lines 535--536
 \T1/cmr/m/n/10.95 l-lkkjji-ih-hg-gf-feed-d-c-cb-baa  zzyyxxwwvvu-uttss-r-rqqp-poon-n-mm-l-lkkjji-ih-hg-gf-feed-d-c-cb-baa  zzyyxxwwvvu-
  []
 
 
-Overfull \hbox (0.79753pt too wide) in paragraph at lines 564--565
+Overfull \hbox (0.79753pt too wide) in paragraph at lines 535--536
 \T1/cmr/m/n/10.95 uttss-r-rqqp-poon-n-mm-l-lkkjji-ih-hg-gf-feed-d-c-cb-baa  zzyyxxwwvvu-uttss-r-rqqp-poon-n-mm-l-lkkjji-ih-hg-gf-
  []
 
-
-Overfull \hbox (0.48013pt too wide) in paragraph at lines 567--568
+[18 <./assets/scenario_c/memory.png>]
+Overfull \hbox (0.48013pt too wide) in paragraph at lines 538--539
 \T1/cmr/m/n/10.95 yyxxwwvvuuttsrsrqpqopnomnlmkljkjihighfgfedecdbcab az yzxy-wxwvvu-tus-trsqr-pqop-non-mm-
  []
 
 
-Overfull \hbox (32.73949pt too wide) in paragraph at lines 567--568
+Overfull \hbox (32.73949pt too wide) in paragraph at lines 538--539
 \T1/cmr/m/n/10.95 l-lkjkji-ihgh-fgefdecd-b-cab az yzxy-wxvwu-v-tus-trsqr-pqop-nomnlmkljkji-high-gf-feed-d-cb-cab az zyyxxwwvvu-
  []
 
 
-Overfull \hbox (30.74109pt too wide) in paragraph at lines 567--568
+Overfull \hbox (30.74109pt too wide) in paragraph at lines 538--539
 \T1/cmr/m/n/10.95 uttss-r-rqqp-poon-n-mm-l-lkjk-i-ji-h-hg-gfefed-d-c-cb-baa  zzyyxxwwvvu-tut-srsqrqpop-nomnlmkljk-i-jhigh-fgefdecd-
  []
 
-[23 <./sharedb/charts/half_second_180_users/sharedb_memory_S3.png>] [24] (/home/moinqidw/Courses/CUHK/5720/report.aux) ) 
+[19] (/home/moinqidw/Courses/CUHK/5720/report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1537 strings out of 483183
- 25261 string characters out of 5966292
- 248153 words of memory out of 5000000
- 16550 multiletter control sequences out of 15000+600000
+ 1479 strings out of 483183
+ 21597 string characters out of 5966292
+ 247986 words of memory out of 5000000
+ 16508 multiletter control sequences out of 15000+600000
  544533 words of font info for 50 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 30i,7n,25p,480b,189s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 30i,7n,25p,374b,189s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1728.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1440.600pk> </home/moinqidw/.texlive2019/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm2074.600pk></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on /home/moinqidw/Courses/CUHK/5720/report.pdf (24 pages, 660897 bytes).
+Output written on /home/moinqidw/Courses/CUHK/5720/report.pdf (19 pages, 477738 bytes).
 PDF statistics:
- 529 PDF objects out of 1000 (max. 8388607)
- 119 compressed objects within 2 object streams
+ 495 PDF objects out of 1000 (max. 8388607)
+ 109 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 101 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

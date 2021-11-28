@@ -7,7 +7,7 @@ sharedb.types.register(richText.type);
 var collection = 'testing';
 var topic = 'richtext';
 
-const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ' '];
+const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
 console.log("Starting an automated client with arguments: "+process.argv);
 
@@ -28,10 +28,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
         localPresence.submit({user: 'user_'+id});
         var index = 0;
         setInterval(() => {
-            if (index === id) {
-                doc.submitOp([{insert: ''+(id % 10)}]);
-            }
-            const value = alphabets[(id + index) % 27];
+            const value = alphabets[(id + index) % 26];
             doc.submitOp([{insert: value}]);
             index++;
         }, 1000);
