@@ -32,7 +32,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
   // add sample text to the string
   var index = 0;
   setInterval(() => {
-    const value = alphabets[(id + index) % 26];
+    const value = alphabets[index % 26];
     yText.insert(0, value);
     index++;
   }, 1000);

@@ -77,7 +77,7 @@ function calculateAccuracy(str) {
     var error = 0;
     const alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 
-    const text = ReverseString(str).substr(0, 1000);
+    const text = ReverseString(str).substr(0, 100);
     console.log(text);
     const n_clients = parseInt(process.argv[2]);
 

@@ -28,7 +28,7 @@ if (!!(process.argv) && process.argv.length > 0 && parseInt(process.argv[2]) >= 
         localPresence.submit({user: 'user_'+id});
         var index = 0;
         setInterval(() => {
-            const value = alphabets[(id + index) % 26];
+            const value = alphabets[index % 26];
             doc.submitOp([{insert: value}]);
             index++;
         }, 1000);
