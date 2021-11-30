@@ -1,24 +1,34 @@
-\documentclass[12pt]{article}
+\documentclass[9pt, titlepage]{article}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 \graphicspath{ {./assets/} }
 
-\setlength{\oddsidemargin}{7pt}
-\setlength{\textwidth}{438pt}
+\linespread{1.5}
+
+\usepackage{url}
+
+\usepackage[a4paper, portrait, lmargin=2cm, rmargin=2.5cm]{geometry}
 
 \title{Analysis of Contemporary Methodologies For Near-Real Time Collaboration}
-\date{2021-09-26}
-\author{Moin Ahmed Qidwai}
+\author{by \\ Moin Ahmed Qidwai \\ 1155160971 \\\\
+A report \\
+submitted in partial fulfillment \\
+of the requirements for the degree of \\
+Master of Science in Computer Science \\
+The Chinese University of Hong Kong
+}
+\date{December 2021 \\ Supervisor: Dr. Hong Xu, Henry}
 
 \begin{document}
   \maketitle
+  \tableofcontents
   \newpage
 
-  \section{Introduction}
+  \section{Abstract}
   Near-real time (NRT) collaboration is the goal of many software applications, from collaborative text-editors like Google Docs to modelling applications like Autodesk Maya.
   In reality most applications could benefit from allowing users to collaborate effectively regardless of the problem domain that the application targets.
   As such the reason that so few of the mainstream software supports this functionality is generally the result of complexity accompanied with solutions to this problem.
-  While there are a few different methodologies for supporting NRT collaboration, in this paper we shall investigate YJS, a popular library implementing the YATA approach along with 
+  While there are a few different methodologies for supporting NRT collaboration, in this paper we shall investigate YJS, a popular library implementing the YATA approach based on CRDTs along with 
   Operational Transformation, the approach at the core of Google Docs. We shall then present comparisons of the two aforementioned techniques, along with results of tests conducted in real world environments.
 
   \section{Collaboration Objectives}
@@ -26,7 +36,7 @@
   
   \subsection{Eventual Convergence}
   Eventual convergence dictates that if two collaborators receive the same set of operations in any order,
-  the end result of those operations must be the same for both the collaborators.\\
+  the end result of those operations must be the same for both the collaborators. [2]\\
   That is, If we have a algorithm \(A\) for merging operations into a list and two sets of operations \(S_{1}\) and \(S_{2}\) that observe the below relation.
   \begin{equation}
     \forall o : o \in S_{1} \leftrightarrow o \in S_{2}
@@ -38,25 +48,26 @@
   \end{equation}
 
   \subsection{Intention Preservation}
-  The idea behind preservation of intention is simple. Any solution that aims to provide for NRT collaboration must ensure the result is in accordance with the intention of all collaborators.
+  The idea behind preservation of intention is simple. Any solution that aims to provide for NRT collaboration must ensure the result is in accordance with the intention of all collaborators [1].
 
   \subsection{Interleaving}
-  Interleaving occurs if two or more collaborators insert multiple characters at the same index, upon integrating their insertions the result may have their inputs mixed.\\
+  Interleaving occurs if two or more collaborators insert multiple characters at the same index, upon integrating their insertions the result may have their inputs mixed [3].\\
   Example: Collaborators \(C_{1}\) and \(C_{2}\) add "vious" and "cious" to "pre". If interleaving occurs the result may be "prevcioiouuss".
   A program that allows for NRT collaboration must ensure interleaving cannot occur.
 
   \section{YATA}
   The YATA (Yet Another Transformation approach) is the core specification underlying YJS.
-  This specification consists of two main components, a doubly linked list and a set of rules that all operations must observe.
+  This specification consists of two main components, a doubly linked list and a set of rules that all operations must observe [1].
   
   \subsection{Data Representation}
   The doubly linked list representation used by YATA is in contrast to other algorithms. Another popular algorithm is the RGA, which utilizes a uni-directional linked list.
   The doubly linked list allows YATA to avoid interleaving at the start of the document or in prepend operations.
-  As such it can cater for a wider range of operations and use cases than RGA by default. Though due to storing a pointer to the successor the data representation in YATA requires more memory.
+  As such it can cater for a wider range of operations and use cases than RGA by default. 
+  Though due to storing a pointer to the successor the data representation in YATA requires more memory.
   \begin{equation} \label{block}
     Block_{i} = (id_{i}, origin_{left}, origin_{right}, deleted_{i}, value_{i})
   \end{equation}
-  Equation \ref{block} represents a single element in the linked list of YATA. The origins represent the pointers to predecessor and successor elements.
+  Equation \ref{block} represents a single element in the linked list of YATA. The origins represent the pointers to predecessor and successor elements [7].
   \begin{equation} \label{identifier}
     id_{i} = (replica_{i}, counter_{i})
   \end{equation}
@@ -71,21 +82,21 @@
   \begin{equation} \label{insert_operation}
     Operation_{k} = (id_{k}, origin_{k}, left_{k}, right_{k}, deleted_{k}, value_{k})
   \end{equation}
-  Equation \ref{insert_operation} represents the insertion operation with counter (k).
+  Equation \ref{insert_operation} represents the insertion operation with counter (k) [1].
   The \underline{\textbf{origin}} represents the predecessor for the block at the time of creation.
   The \underline{\textbf{left}} and \underline{\textbf{right}} represent the predecessor and successor respectively after the operation has been merged into the linked list.
   The \underline{\textbf{deleted}} flag indicates if the block representing the operation has been marked for deletion.
   The \underline{\textbf{value}} is the actual content that is to be inserted.
   
   \subsubsection{Deletion}
-  The deletion operation is simply represented by setting the deleted flag of the insertion operation to \textbf{true}.
+  The deletion operation is simply represented by setting the deleted flag of the insertion operation to \textbf{true} [5].
   
   \begin{equation} \label{deletion_operation}
     Operation_{k} = (id_{k}, origin_{k}, left_{k}, right_{k}, true, value_{k})
   \end{equation}
 
   \subsubsection{Operation Ordering}
-  Every operation block has a total order in the list defined by the natural predecessor relation \textbf{<}.
+  Every operation block has a total order in the list defined by the natural predecessor relation \textbf{<} [1].
   \begin{equation}
     O_{1} < O_{2} \leftrightarrow O_{1} is\ a\ predecessor\ of\ O_{2}
   \end{equation}
@@ -102,14 +113,14 @@
   The left pointer may change during the merge process of operations created by different replicas, if there are conflicts.
 
   \subsection{Rules of Conflict Resolution}
-  As mentioned earlier in this paper YATA consists of certain rules that must be observed by operations specially in cases of conflicts.
+  As mentioned earlier in this paper YATA consists of certain rules that must be observed by operations specially in cases of conflicts [1].
   These rules are the cornerstone of the YATA approach as they ensure \textbf{eventual convergence} and \textbf{intention preservation}.
 
   \subsubsection{Conflicting insertions}
   Insertion operations (\(O_{a}\), \(O_{b}\), ...) are in conflict if all of them are to be inserted between \(O_{i}\) and \(O_{j}\).
   In the above example, if \(Operation_{new}\) is to be integrated in the list of operations \(L = [O_{i}, c_{a}, c_{b}, c_{c}... O_{j}]\),
   then \(Operation_{new}\) is in conflict with [\(c_{a}, c_{b}, c_{c}, ...\)]. The rules resolve these conflicts by calculating the index \(k\) for the new insertion.
-  If the rules are observed by all collaborators then each of them calculates the same index. Each rule can be illustrated as a predecessor relation \(<_{r}\).
+  If the rules are observed by all collaborators then each of them calculates the same index [1]. Each rule can be illustrated as a predecessor relation \(<_{r}\).
   As such if we observe these rules for \(Operation_{new}\) then we integrate it between \(c_{i}\) and \(c_{j}\) where \(\forall r: c_{i}\ <_{r}\ Operation_{new}\ <_{r}\ c_{j}\).
 
   \subsubsection{Rule One}
@@ -157,8 +168,8 @@
 
   \section{Operational Transformation}
   At it's core Google Docs utilizes Operational Transformation to provide the ability for NRT to it's users. 
-  The idea behind Operational Transformation is quite old yet still actively used, it was pioneered by  C. Ellis and S. Gibbs in 1989.
-  It consists of two core ideas as well as outlined below.
+  The idea behind Operational Transformation is quite old yet still actively used, it was pioneered by  C. Ellis and S. Gibbs in 1989 [8].
+  It consists of two core ideas as outlined by Srijan Agarwal [9].
 
   \begin{itemize}
     \item The document state represented as S, is updated using different Operations \(O_{1}(S), O_{2}(S), ...\) (such as insertion and deletion).
@@ -166,7 +177,7 @@
   \end{itemize}
 
   \subsection{Transformation Function}
-  The transformation function mentioned above can take one of two different forms.
+  The transformation function mentioned above can take one of two different forms. [10]
 
   \subsubsection{Inclusion Transformation}
   The inclusion transformation function denoted \(IT(O_{1}, O_{2}) \rightarrow O_{3}\) takes two operations \(O_{1}, O_{2}\) and returns \(O_{3}\),
@@ -279,7 +290,7 @@
   \end{equation}
 
   \subsection{The Undo Procedure}
-  The undo algorithm must satisfy the following conditions.
+  The undo algorithm must satisfy the following conditions [10].
 
   \begin{itemize}
     \item Undoing an operation O should transform the original state S into the final state FS, such that FS is the result of applying all operations besides O to S.
@@ -316,7 +327,8 @@
   \begin{itemize}
     \item As the operations and state need to be broadcasted to each and every peer, this approach places high strain on network resources.
     \item The storage requirements are high as each peer needs to store the state vector containing the number of changes of each peer along with their identifiers.
-    \item The transformation algorithm can be a lot more complicated given the set of divergent possible states between different peers can be high. 
+    \item The transformation algorithm can be a lot more complicated given the set of divergent possible states between different 
+    peers can be high, as such there is a lack of real world implementations support P2P.
   \end{itemize}
 
   \subsubsection{Client-Server}
@@ -351,7 +363,7 @@
   \begin{itemize}
     \item There is no need to wait for acknowledgement from other participants/server, increasing performance.
     \item Computation and resolution of a large number of simultaneous conflicts with a relatively low processing footprint.
-    \item It is peer to peer by default, hence sharing in all the advantages of P2P architecture.
+    \item It is peer to peer by default, hence sharing in all the advantages of P2P architecture [4].
   \end{itemize}
 
   \subsubsection{Disadvantages}
@@ -380,9 +392,10 @@
   \section{Performance Analysis and Testing}
   In this section we will outline benchmark tests performed using different implementations of YATA and OT.
   These will be compared to shed light on the relative performance advantages and disadvantages mentioned above.
+  The code for the tests can be viewed at \url{https://github.com/moin-qidwai/CUHK_5720}.
   
   \subsection{Testing VM Specifications}
-  The tests have been performed on a cloud based compute instance from Digital Ocean.
+  The tests have been performed on a cloud based compute instance from Google Cloud Platform.
   The specifications are as shown below:
   \begin{itemize}
     \item CPU: 2600 MHz Per Core (Quad Core)
@@ -416,18 +429,20 @@
   \subsection{Scenarios}
   The below table shows the setup for each scenario, the frequency indicates the number of characters 
   inserted per second and the users column shows the number of concurrent users.\\
-
-  \begin{tabular}{||c c c||} 
-    \hline
-    Scenario & Frequency & Users \\ [0.5ex] 
-    \hline\hline
-    A & 2 & 50 \\ 
-    \hline
-    B & 2 & 100 \\
-    \hline
-    C & 10 & 50 \\
-    \hline
-  \end{tabular}
+  \begin{table}
+    \centering
+    \begin{tabular}{||c c c||} 
+      \hline
+      Scenario & Frequency & Users \\ [0.5ex] 
+      \hline\hline
+      A & 2 & 50 \\ 
+      \hline
+      B & 2 & 100 \\
+      \hline
+      C & 10 & 50 \\
+      \hline
+    \end{tabular}
+  \end{table}
 
   \subsection{Number Of Users}
   The below graphs indicate a lower performance for user/client connectivity in the case of YJS.
@@ -469,19 +484,6 @@
     \textbf{Scenario C}
   \end{center}
 
-  Further looking at the below process information verifies that YJS has a higher per client CPU utilization. The top node process for both YJS and ShareDB is the server. The five node processes below in the list are the clients.
-  The average CPU utilization per client for YJS is higher than that of ShareDB.
-  
-  \subsubsection{YJS}
-  \begin{center}
-    \includegraphics[scale=0.60]{yjs_processes.png}
-  \end{center}
-
-  \subsubsection{ShareDB}
-  \begin{center}
-    \includegraphics[scale=0.60]{sharedb_processes.PNG}
-  \end{center}
-
   \subsection{Memory Utilization}
   Memory utilization is quite similar for both YJS and ShareDB, though a bit higher for YJS. This is also due to the fact that
   in CRDT approaches each client must maintain additional meta data for the document contents. Though generally this is not a 
@@ -501,11 +503,27 @@
 
   \end{center}
 
+  \subsection{Process Snapshot}
+  The below images show process information that verifies that YJS has a higher per client CPU utilization.
+  The top node process for both YJS and ShareDB is the server. The five node processes below in the list are the clients.
+  The average CPU utilization per client for YJS is higher than that of ShareDB.
+  
+  \subsubsection{YJS}
+  \begin{center}
+    \includegraphics[scale=0.60]{yjs_processes.png}
+  \end{center}
+
+  \subsubsection{ShareDB}
+  \begin{center}
+    \includegraphics[scale=0.60]{sharedb_processes.PNG}
+  \end{center}
+
   \subsection{Accuracy}
   Previously we have looked at the hardware resource utilization per client for both YJS and ShareDB. In such comparisons as noted ShareDB does
   perform slightly better than YJS. Now we zoom in to look at the accuracy of the actual text produced when inserting characters.
   This is so that we can ascertain the "quality" of the conflict resolution that each approach offers, rather than simply the "quantity".
-  We define a accuracy metric based on a simpler version of our insertion algorithm as shown in the below equations
+  We define a accuracy metric based on a simpler version of our insertion algorithm illustrated by equation (28). Equations (29) to (31)
+  illustrate the formula for determining accuracy.
 
   \begin{equation} \label{simple_insertion_algorithm_character}
     Char(index, id) = alphabet[index\ mod\ 26]
@@ -534,55 +552,87 @@
   The below table shows the test runs and their accuracy for both YJS and ShareDB. Each of these tests were run in isolation on
   the same cloud host described above in the performance evaluation section.\\
 
-  \begin{tabular}{||c c c||} 
-    \hline
-    Test Number & Accuracy (\%) - ShareDB & Accuracy (\%) - YJS \\ [0.5ex] 
-    \hline\hline
-    1 & 99.92 & 70.06 \\ 
-    \hline
-    2 & 92.83 & 70.53 \\
-    \hline
-    3 & 86.35 & 50.79 \\
-    \hline
-    4 & 24.08 & 51.61 \\
-    \hline
-    5 & 99.86 & 66.36 \\
-    \hline
-    6 & 92.11 & 54.69 \\
-    \hline
-    7 & 47.83 & 64.51 \\
-    \hline
-    8 & 91.95 & 72.77 \\
-    \hline
-    9 & 59.97 & 88.03 \\
-    \hline
-    10 & 58.73 & 64.30 \\
-    \hline
-  \end{tabular}
-  \\
-
+  \begin{center}
+    \begin{tabular}{||c c c||} 
+      \hline
+      Test Number & Accuracy (\%) - ShareDB & Accuracy (\%) - YJS \\ [0.5ex] 
+      \hline\hline
+      1 & 99.92 & 70.06 \\ 
+      \hline
+      2 & 92.83 & 70.53 \\
+      \hline
+      3 & 86.35 & 50.79 \\
+      \hline
+      4 & 24.08 & 51.61 \\
+      \hline
+      5 & 99.86 & 66.36 \\
+      \hline
+      6 & 92.11 & 54.69 \\
+      \hline
+      7 & 47.83 & 64.51 \\
+      \hline
+      8 & 91.95 & 72.77 \\
+      \hline
+      9 & 59.97 & 88.03 \\
+      \hline
+      10 & 58.73 & 64.30 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  
   The below table further provides common statistical measures for the above dataset.\\
 
-  \begin{tabular}{||c c c c c c||} 
-    \hline
-    Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
-    \hline\hline
-    ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
-    \hline
-    YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
-    \hline
-  \end{tabular}
- 
+  \begin{center}
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+      \hline\hline
+      ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+      \hline
+      YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill \break
   \section{Conclusion}
   The CRDT implementation in YJS has generally held up against the more mature traditional Operational Transformation based approaches,
   but it has disadvantages when compared along some performance dimensions.
   Based on our testing and analysis, YJS has a better minimum quality with regards to intention preservation,
   hence when reliability on data quality is important it may be considered.
-  Ofcourse it's most popular use case may still remain to be offline P2P collaboration as that is simply not supported in ShareDB.
+  Ofcourse it's most popular use case may still remain to be offline P2P collaboration as that is simply not supported in ShareDB [6].
   In other cases, operational transformation at this stage seems to perform well specially for a larger number of clients.
   Hence when client connectivity is of the utmost importance then ShareDB should be preferred.
 
   As CRDT based approaches become more prevalent and receive further attention in the research community their performance should improve.
   We will further look at garbage collection and undo/redo capabilities in our next report.
+
+  \break
+
+  \section{References}
+  \([1]\) Nicolaescu, Petru \& Jahns, Kevin \& Derntl, Michael \& Klamma, Ralf. (2016). Near Real-Time Peer-to-Peer Shared Editing on Extensible Data Types. 39-49. 10.1145/2957276.2957310.
+  \\
+  \([2]\) Shapiro M., Preguiça N., Baquero C., Zawirski M. \(2011\) Conflict-Free Replicated Data Types. In: Defago X., Petit F., Villain V. (eds) Stabilization, Safety, and Security of Distributed Systems. SSS 2011. Lecture Notes in Computer Science, vol 6976. Springer, Berlin, Heidelberg. 
+  \\ \url{https://doi.org/10.1007/978-3-642-24550-3_29}
+  \\
+  \([3]\) Bartosz Sypytkowski. Delta-state CRDTs: indexed sequences with YATA. 
+  \\ \url{https://bartoszsypytkowski.com/yata/}
+  \\
+  \([4]\) Preston So. Yjs deep dive: What is Yjs and operational transformation? - Part 1. \\ \url{https://www.tag1consulting.com/blog/yjs-deep-dive-part-1}
+  \\
+  \([5]\) Preston So. Yjs deep dive: How Yjs makes real-time collaboration easier and more efficient - part 2. \\ \url{https://www.tag1consulting.com/blog/yjs-deep-dive-part-2}
+  \\
+  \([6]\) Preston So. Yjs deep dive: How Yjs handles offline editing and versioning - part 4. \\ \url{https://www.tag1consulting.com/blog/yjs-deep-dive-part-4}
+  \\
+  \([7]\) Kevin Jahns. Are CRDTs suitable for shared editing?\\
+  \url{https://blog.kevinjahns.de/are-crdts-suitable-for-shared-editing}
+  \\
+  \([8]\) C. A. Ellis and S. J. Gibbs. 1989. Concurrency control in groupware systems. SIGMOD Rec. 18, 2 (June 1989), 399–407. DOI. \\
+  \url{https://doi.org/10.1145/66926.66963}
+  \\
+  \([9]\) Srijan Agarwal. Building a real-time collaborative editor using Operational Transformation. \\
+  \url{https://srijancse.medium.com/how-real-time-collaborative-editing-work-operational-transformation-ac4902d75682}
+  \\
+  \([10]\) Srijan Agarwal. Operational Transformation, the real time collaborative editing algorithm. \\
+  \url{https://hackernoon.com/operational-transformation-the-real-time-collaborative-editing-algorithm-bf8756683f66}
 
 \end{document}
