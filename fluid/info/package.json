@@ -1,0 +1,16 @@
+{
+  "name": "fluid-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@fluidframework/tinylicious-client": "^0.49.2",
+    "fluid-framework": "^0.49.2",
+    "readline-async": "^0.1.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

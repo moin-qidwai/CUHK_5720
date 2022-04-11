@@ -1,0 +1,22 @@
+version: "3.9"
+   
+services:
+  sharedb_server:
+    build: ./server/
+    cap_add:
+      - NET_ADMIN
+  sharedb_info:
+    build: ./info/
+    command: 25 1 sharedb_server # number_of_clients number_of_periods server_container_name
+    # volumes:
+    #   - ./info_data:/app
+    depends_on:
+      - sharedb_server
+  sharedb_client:
+    build: ./client/
+    command: 1000 sharedb_server # insertion_interval server_container_name
+    deploy:
+      mode: replicated
+      replicas: 25
+    depends_on:
+      - sharedb_info

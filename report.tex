@@ -550,7 +550,7 @@ The Chinese University of Hong Kong
   \textbf{The indices in equations above start from 0 and alphabet is the list of alphabet a to z, in ascending order.}
   
   The below table shows the test runs and their accuracy for both YJS and ShareDB. Each of these tests were run in isolation on
-  the same cloud host described above in the performance evaluation section.\\
+  the same cloud host described above in the performance evaluation section. The number of clients for each test was 3.\\
 
   \begin{center}
     \begin{tabular}{||c c c||} 
@@ -593,7 +593,274 @@ The Chinese University of Hong Kong
       \hline
     \end{tabular}
   \end{center}
-  \hfill \break
+  \hfill
+
+  \subsubsection{Concluding Remarks}
+  It is clear from our testing and performance analysis that neither of the two approaches (CRDT or OT) perform well qualitatively.
+  The accuracy metric that we measured in the previous section illustrates a mean error rate of atleast 22\% with only three clients.
+  As both approaches are fundamentally targeted towards collaboration, we can assume that three clients is likely a minimum number of
+  clients in real world scenarios. In light of this we investigate another approach pioneered by Microsoft called Total Order Broadcast.
+  This approach is implemented in a library called Fluid which is made publicly available by Microsoft for use. We will investigate this
+  library and it's approach in the next section.
+
+  \break
+  \section{Total Order Broadcast}
+  The fundamental principle behind total order broadcast is to ensure a consistent order to the operations being applied by different 
+  clients using a central service. When a client makes a change to the local state, that change is first sent to the central service 
+  which does three things [11]:
+
+  \begin{itemize}
+    \item Assigns a monotonically increasing sequence number to the operation; this is the “total order” part of total order broadcast.
+    \item Broadcasts the operation to all other connected clients; this is the “broadcast” part of total order broadcast.
+    \item Stores the operation's data
+  \end{itemize}
+
+  As each of the operation is ordered by the central service, the total order remains consistent for every client. The requirement for
+  a central service makes this approach unfeasible as a P2P solution to collaborative editing similar to Operational Transformation.
+  Let us first compare total order broadcast with the previously explored approaches of CRDT and OT.
+
+  \subsection{Fluid}
+  The only implementation of total order broadcast currently available is from Microsoft itself, the name of this framework is Fluid.
+  The Fluid framework is currently in preview, and is also available through Azure. Though given the relative immaturity of Fluid it 
+  suffers from certain issues that have already been resolved in other libraries like ShareDB. When conducting our comparisons, we will
+  assume Fluid to be in it's current state and hence assume those issues to be part of our comparison, though given the pace of development
+  of this framework our comparison may be outdated by the time of distribution of this report.
+
+  \subsection{Total Order Broadcast and CRDT Comparison}
+  The advantages and disadvantages of Total Order Broadcast when compared to CRDT are outlined below.
+
+  \subsubsection{Advantages}
+  \begin{itemize}
+    \item Users are allowed to define their own custom merge strategies for conflict resolution, leading to high extensibility.
+    \item Being backed by Microsoft, Fluid has extensive development resources and long term support.
+  \end{itemize}
+
+  \subsubsection{Disadvantages}
+  \begin{itemize}
+    \item As it requires a central server, it is susceptible to single point of failure.
+    \item The requirement for acknowledgement reduces the performance for clients.
+    \item The relative immaturity leads to poor performance when compared to CRDTs.
+  \end{itemize}
+
+  \subsection{Total Order Broadcast and OT Comparison}
+  The advantages when compared to OT are similar to the one's outlined above in our comparison to CRDT.
+  The disadvantages of Total Order Broadcast when compared to OT are outlined below.
+
+  \begin{itemize}
+    \item ShareDB significantly optimizes the size of each communicated operation hence Fluid consumes more network resources.
+    \item The relative immaturity leads to poor performance when compared to OTs.
+  \end{itemize}
+
+  \subsection{Preliminary Performance Analysis}
+  A basic integration of the fluid framework was tested using our formula for insertion as outlined in section 6.8. The performance
+  was drastically poor even for just a few clients. Traversing the code of the framework few potential causes were identified as outlined 
+  below.
+  
+  \begin{itemize}
+    \item Absence of inflight operational handling as all operations are sent regardless of server's acknowledgements.
+    \item The raw textual representation of the operations transferred over the network.
+    \item A lack of optimization around the websocket layer specifically for transferring Fluid Operations.
+  \end{itemize}
+
+  As all these features seem to have been developed in other frameworks (like ShareDB) over decades, it is unrealistic to expect
+  Fluid to be able to deliver similar quality in a matter of a few years. As such Fluid was discarded as a potential solution to
+  the poor accuracy we encountered during our testing of CRDT and OT. We then embarked upon adding a proprietary feature to ShareDB 
+  that manages to improve the accuracy metric substantially. In the next section we will discuss this feature.
+  
+  \break
+
+  \section{Proprietary Solution}
+  In light of the relatively weak performance in terms of accuracy by all the prior mentioned approaches, we proceeded to investigate
+  improvements to ShareDB (OT) that could lead to reasonable accuracy. Eventually we determined that relaxing the consistency constraint
+  leads to tremendous improvements in the result. 
+  
+  \subsection{Periodic Consistency}
+  One of the objectives of Real-Time collaborative editing as mentioned at the start of our report is eventual convergence. The goal is
+  for the distributed states of the document to converge at some point in future. The exact nature of this convergence is not necessarily
+  outlined in most texts related to real-time collaborative editing. This leads us to entertain the possibility of merging the states
+  periodically in discrete time steps rather than attempt to continuously merge the state of distributed documents. We call this approach
+  periodic consistency, in order to differentiate it from continuous consistency as demonstrated by previously investigated solutions.
+  Periodic consistency has a few additional components on top of ShareDB's core components as outlined below.
+
+  \subsubsection{Coordinator}
+  The coordinator is a new service with the sole purpose to coordinate the periodic convergence procedure across all connected clients.
+  For the purposes of our implementation we used the Presence API that is already part of ShareDB but the coordinator in theory can
+  utilize any broadcasting technology that is suitable. The coordinator much like the server acts as a central service, but unlike the 
+  server only performs it's tasks periodically. At set intervals of \(t\) seconds the coordinator will perform the following tasks.
+
+  \begin{itemize}
+    \item Broadcast to all clients to pause execution of operations and provide the list of operations for relevant period.
+    \item Clients will send the list of operations to the coordinator along with a time indicating their creation as per clients.
+    \item The coordinator orders each of the operations by the creation time - start of client, this is equivalent to a total order algorithm.
+    \item The coordinator then performs the operation on the document state at \(t-1\) to arrive at document state of \(t\).
+    \item The coordinator then broadcasts this "converged" state for all clients to merge with their prior state.
+    \item The coordinator broadcasts to all clients to resume executions of operations.
+  \end{itemize}
+
+  The above scheme allows for the convergence of state at set period intervals, this period can be modified by the user as per their need.
+  The idea is to never let the state deviate too far from the intention, even if that entails periodic pauses to the ability to "edit"
+  the document state by the clients. This does not dissipate however the "real-time" aspect as we still allow for OT to resolve the conflicts
+  in real-time, our periodic merge is on top of the continuous merge that is provided by OT. This is to allow the clients to improve the
+  accuracy of their collaborative editing periodically but still have a less than ideal accurate snapshot on a continuous basis. We will
+  further discuss the advantages and disadvantages of our approach at a later stage.
+
+  \subsubsection{Decentralized Clock}
+  Perhaps the most important addition in our approach besides the coordinator is the concept of a decentralized clock. While the 
+  implementation of total order broadcast in Fluid did not yield positive results, we have utilized that idea within our own solution.
+  We ensure that the final converged document has a total order on it's operation determined and dictated by the coordinator. This total 
+  order though is only determined at periodic intervals rather than continuously upon every operation as highlighted in the previous section.
+  Each client maintains a local clock per document and upon subscription to the document sends the local time to the coordinator as per 
+  it's clock. The coordinator maintains this "time of subscription" for each client and utilizes this when ordering the operations. Each
+  client utilizes their local clock to "attach" a time value to their operations to indicate their time of creation. At the end of the
+  period as a client sends it's list of operations for that period to the coordinator, it includes this time of creation. The coordinator
+  then simply orders the total set of operations for that period according to the formula below.
+
+  \begin{equation} \label{total_order_calculation_by_time}
+    Order(OA, OB) = 
+    \left\{
+	    \begin{array}{ll}
+        OA, OB & \mbox{if } (OA.OT - OA.ST) < (OB.OT - OB.ST) \\
+        OB, OA & \mbox{otherwise }
+	    \end{array}
+    \right.
+  \end{equation}
+
+  Where OA and OB are two different operations and OT represents the client local time of the creation of that operation, while
+  ST represents the client local time of subscription for the client of that operation.
+  \\ \\
+  This localized clock allows for better intention preservation as it does not suffer from degradation in quality due to network delay.
+  Since the clock is localized the snapshot of intention is captured locally without relying on network communication. This does not
+  however supersede the operational transformation used in ShareDB, as mentioned we still utilize OT for continuous integration of the 
+  document changes and hence the capture of the intention according to the clock is simply a complement to the state of the document at
+  that point in time according to the client. 
+
+  \subsection{Advantages of Periodic Convergence}
+  \begin{itemize}
+    \item The intention of the author of a particular operation is better preserved leading to better accuracy.
+    \item The shared state of the document does not deviate from it's desired state for too long.
+    \item Increased resilience against network delays and outages when compared to more traditional methods.
+  \end{itemize}
+
+  \subsection{Disadvantages of Periodic Convergence}
+  \begin{itemize}
+    \item The need to pause all clients for a short duration periodically, hence intrusive in nature.
+    \item The interplay between intention resolution by both OT and TOB can get quite complex.
+    \item The additional burden of maintaining a coordinator that is like the server a single point of failure.
+    \item Increased utilization of both network and localized computation resources.
+  \end{itemize}
+
+  \break
+
+  \section{Accuracy Testing for Periodic Convergence}
+  In this section we will outline the results of testing our solution similar to section 6, although in this section we will focus
+  solely on the accuracy metric and provide comparative analysis to the base implementation of ShareDB. 
+
+  \subsection{Testing VM Specifications}
+  The tests have been performed on a cloud based compute instance from Google Cloud Platform. The specifications are the same as in section 6.
+  The specifications are as shown below:
+  \begin{itemize}
+    \item CPU: 2600 MHz Per Core (Quad Core)
+    \item Memory: 16 GB
+  \end{itemize}
+
+  \section*{Benchmarks}
+  In order to analyze and compare the performance of our solution relative to ShareDB, we have created separate applications to benchmark 
+  the basic implementation of ShareDB and our modified implementation. The basic implementation is the same one used in our previous tests
+  in section 6.8. We further dockerize both these setups and execute them through docker compose in order to further analyze effect of
+  various network disruptions. Each implementation uses the same insertion algorithm outlined in section 6.8 so as to keep the comparison 
+  fair. The various testing scenarios are listed below, for each scenario we repeat the test 10 times and take various statistical measures
+  for purposes of comparison. The length of a period for our testing purposes is 60 seconds, hence to compare the basic implementation and
+  our modified implementation 3 periods refer to 180 seconds of total insertions for both solutions. The network emulation is achieved using
+  Pumba (https://github.com/alexei-led/pumba), which in turn utilized Netem and TC to emulate various network conditions in 
+  dockerized environments.
+  \begin{center}
+    \centering
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Scenario & Frequency & Users & Periods & Latency (ms) & Loss Rate (\%)\\ [0.5ex]
+      \hline\hline
+      A & 2 & 25 & 1 & 0 & 0\\ 
+      \hline
+      B & 2 & 50 & 1 & 0 & 0\\
+      \hline
+      C & 1 & 50 & 1 & 0 & 0\\
+      \hline
+      D & 2 & 25 & 3 & 0 & 0\\
+      \hline
+      E & 2 & 50 & 3 & 0 & 0\\
+      \hline
+      F & 1 & 50 & 3 & 0 & 0\\
+      \hline
+      G & 2 & 25 & 2 & 500 & 0\\
+      \hline
+      H & 2 & 50 & 2 & 500 & 0\\
+      \hline
+      I & 1 & 50 & 2 & 500 & 0\\
+      \hline
+      J & 2 & 25 & 2 & 0 & 10\\
+      \hline
+      K & 2 & 50 & 2 & 0 & 10\\
+      \hline
+      L & 1 & 50 & 2 & 0 & 10\\
+      \hline
+      M & 2 & 25 & 2 & 500 & 10\\
+      \hline
+      N & 2 & 50 & 2 & 500 & 10\\
+      \hline
+      O & 1 & 50 & 2 & 500 & 10\\
+      \hline
+    \end{tabular}
+  \end{center}
+
+  \subsection{Results}
+  This section outlines the results obtained through our testing, each section represents one of the above scenarios.
+
+  \subsubsection{Scenario A}
+  
+  \begin{center}
+    \begin{tabular}{||c c c||} 
+      \hline
+      Test Number & Accuracy (\%) - ShareDB & Accuracy (\%) - Modified ShareDB \\ [0.5ex] 
+      \hline\hline
+      1 & 99.92 & 70.06 \\ 
+      \hline
+      2 & 92.83 & 70.53 \\
+      \hline
+      3 & 86.35 & 50.79 \\
+      \hline
+      4 & 24.08 & 51.61 \\
+      \hline
+      5 & 99.86 & 66.36 \\
+      \hline
+      6 & 92.11 & 54.69 \\
+      \hline
+      7 & 47.83 & 64.51 \\
+      \hline
+      8 & 91.95 & 72.77 \\
+      \hline
+      9 & 59.97 & 88.03 \\
+      \hline
+      10 & 58.73 & 64.30 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  
+  The below table further provides common statistical measures for the above dataset.\\
+
+  \begin{center}
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+      \hline\hline
+      ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+      \hline
+      YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill
+
+  \break
   \section{Conclusion}
   The CRDT implementation in YJS has generally held up against the more mature traditional Operational Transformation based approaches,
   but it has disadvantages when compared along some performance dimensions.
@@ -634,5 +901,8 @@ The Chinese University of Hong Kong
   \\
   \([10]\) Srijan Agarwal. Operational Transformation, the real time collaborative editing algorithm. \\
   \url{https://hackernoon.com/operational-transformation-the-real-time-collaborative-editing-algorithm-bf8756683f66}
+  \\
+  \([11]\) Fluid Framework, Total order broadcast \& eventual consistency. \\
+  \url{https://fluidframework.com/docs/concepts/tob/}
 
 \end{document}

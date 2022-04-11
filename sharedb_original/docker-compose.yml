@@ -1,0 +1,20 @@
+version: "3.9"
+   
+services:
+  sharedb_server:
+    build: ./server/
+  sharedb_info:
+    build: ./info/
+    command: 100 180000 sharedb_server # number_of_clients total_time_before_taking_snapshot server_container_name
+    # volumes:
+    #   - ./info_data:/app
+    depends_on:
+      - sharedb_server
+  sharedb_client:
+    build: ./client/
+    command: 2000 sharedb_server # insertion_interval server_container_name
+    deploy:
+      mode: replicated
+      replicas: 100
+    depends_on:
+      - sharedb_info

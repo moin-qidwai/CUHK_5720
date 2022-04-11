@@ -11,7 +11,7 @@ if (!!(process.argv) && process.argv.length > 1) {
         }
     }
     
-    const result = (1 - error/text.length)*100
+    const result = (1 - error/text.length)*100;
     console.log(result);
 }
 
