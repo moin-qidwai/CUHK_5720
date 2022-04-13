@@ -773,6 +773,11 @@ The Chinese University of Hong Kong
   our modified implementation 3 periods refer to 180 seconds of total insertions for both solutions. The network emulation is achieved using
   Pumba (https://github.com/alexei-led/pumba), which in turn utilized Netem and TC to emulate various network conditions in 
   dockerized environments.
+
+  \break
+
+  \section*{Results}
+  This section outlines the results obtained through our testing, each section represents one of the below scenarios.
   \begin{center}
     \centering
     \begin{tabular}{||c c c c c c||} 
@@ -787,60 +792,176 @@ The Chinese University of Hong Kong
       \hline
       D & 2 & 25 & 3 & 0 & 0\\
       \hline
-      E & 2 & 50 & 3 & 0 & 0\\
+      E & 2 & 25 & 2 & 500 & 0\\
       \hline
-      F & 1 & 50 & 3 & 0 & 0\\
+      F & 2 & 25 & 2 & 0 & 10\\
       \hline
-      G & 2 & 25 & 2 & 500 & 0\\
-      \hline
-      H & 2 & 50 & 2 & 500 & 0\\
-      \hline
-      I & 1 & 50 & 2 & 500 & 0\\
-      \hline
-      J & 2 & 25 & 2 & 0 & 10\\
-      \hline
-      K & 2 & 50 & 2 & 0 & 10\\
-      \hline
-      L & 1 & 50 & 2 & 0 & 10\\
-      \hline
-      M & 2 & 25 & 2 & 500 & 10\\
-      \hline
-      N & 2 & 50 & 2 & 500 & 10\\
-      \hline
-      O & 1 & 50 & 2 & 500 & 10\\
+      G & 2 & 25 & 2 & 500 & 10\\
       \hline
     \end{tabular}
   \end{center}
 
-  \subsection{Results}
-  This section outlines the results obtained through our testing, each section represents one of the above scenarios.
-
   \subsubsection{Scenario A}
   
   \begin{center}
-    \begin{tabular}{||c c c||} 
+    \begin{tabular}{||c c c c c||} 
       \hline
-      Test Number & Accuracy (\%) - ShareDB & Accuracy (\%) - Modified ShareDB \\ [0.5ex] 
+      Test Number & Accuracy (\%) - Original & Doc Length - Original & Accuracy (\%) - Modified & Doc Length - Modified \\ [0.5ex] 
       \hline\hline
-      1 & 99.92 & 70.06 \\ 
+      1 &  7.57 & 2947 & 98.14 & 2843 \\ 
       \hline
-      2 & 92.83 & 70.53 \\
+      2 & 16.11 & 2953 & 98.14 & 2842 \\ 
       \hline
-      3 & 86.35 & 50.79 \\
+      3 & 12.52 & 2956 & 97.77 & 2865 \\ 
       \hline
-      4 & 24.08 & 51.61 \\
+      4 & 12.11 & 2949 & 98.05 & 2873 \\ 
       \hline
-      5 & 99.86 & 66.36 \\
+      5 & 22.33 & 2940 & 98.07 & 2844 \\ 
       \hline
-      6 & 92.11 & 54.69 \\
+      6 & 12.12 & 2951 & 97.93 & 2855 \\ 
       \hline
-      7 & 47.83 & 64.51 \\
+      7 & 4.15 & 2949 & 97.88 & 2834 \\ 
       \hline
-      8 & 91.95 & 72.77 \\
+      8 & 8.19 & 2947 & 97.53 & 2838 \\ 
       \hline
-      9 & 59.97 & 88.03 \\
+      9 & 12.25 & 2949 & 97.83 & 2851 \\ 
       \hline
-      10 & 58.73 & 64.30 \\
+      10 & 21.89 & 2954 & 97.94 & 2866 \\ 
+      \hline
+    \end{tabular}
+  \end{center}
+  
+  The below table further provides common statistical measures for the above dataset.\\
+
+  \begin{center}
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+      \hline\hline
+      ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+      \hline
+      YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill
+
+  \subsubsection{Scenario B}
+  
+  \begin{center}
+    \begin{tabular}{||c c c c c||} 
+      \hline
+      Test Number & Accuracy (\%) - Original & Doc Length - Original & Accuracy (\%) - Modified & Doc Length - Modified \\ [0.5ex] 
+      \hline\hline
+      1 &  4.04 & 5719 & 88.70 & 5081 \\ 
+      \hline
+      2 &  6.04 & 5730 & 87.98 & 5041 \\ 
+      \hline
+      3 &  4.14 & 5721 & 87.59 & 5028 \\ 
+      \hline
+      4 &  0.31 & 5736 & 89.49 & 5090 \\ 
+      \hline
+      5 &  2.20 & 5738 & 88.06 & 5093 \\ 
+      \hline
+      6 &  4.11 & 5712 & 88.42 & 5103 \\ 
+      \hline
+      7 &  0.26 & 5722 & 88.28 & 5045 \\ 
+      \hline
+      8 &  4.09 & 5735 & 88.38 & 5042 \\ 
+      \hline
+      9 &  4.01 & 5728 & 87.65 & 5143 \\ 
+      \hline
+      10 & 4.12 & 5713 & 89.01 & 5051 \\ 
+      \hline
+    \end{tabular}
+  \end{center}
+  
+  The below table further provides common statistical measures for the above dataset.\\
+
+  \begin{center}
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+      \hline\hline
+      ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+      \hline
+      YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill
+
+  \subsubsection{Scenario C}
+  
+  \begin{center}
+    \begin{tabular}{||c c c c c||} 
+      \hline
+      Test Number & Accuracy (\%) - Original & Doc Length - Original & Accuracy (\%) - Modified & Doc Length - Modified \\ [0.5ex] 
+      \hline\hline
+      1 & 10.19 & 8627 & 90.80 & 2566 \\ 
+      \hline
+      2 &  8.20 & 8625 & 91.69 & 2600 \\ 
+      \hline
+      3 &  6.28 & 8653 & 90.82 & 2561 \\ 
+      \hline
+      4 &  4.32 & 8603 & 90.63 & 2560 \\ 
+      \hline
+      5 & 12.15 & 8637 & 89.61 & 2541 \\ 
+      \hline
+      6 &  8.26 & 8581 & 90.65 & 2578 \\ 
+      \hline
+      7 &  2.39 & 8637 & 89.73 & 2572 \\ 
+      \hline
+      8 & 10.30 & 8602 & 90.24 & 2557 \\ 
+      \hline
+      9 &  6.42 & 8633 & 89.87 & 2549 \\ 
+      \hline
+      10 & 8.22 & 8643 & 90.91 & 2552 \\ 
+      \hline
+    \end{tabular}
+  \end{center}
+  
+  The below table further provides common statistical measures for the above dataset.\\
+
+  \begin{center}
+    \begin{tabular}{||c c c c c c||} 
+      \hline
+      Library & Mean (\%) & Median (\%) & Max (\%) & Min (\%) & Standard Deviation (\%) \\ [0.5ex] 
+      \hline\hline
+      ShareDB & 78.828 & 89.15 & 99.92 & 24.08 & 26.00 \\ 
+      \hline
+      YJS & 65.365 & 65.44 & 88.03 & 50.79 & 11.23 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \hfill
+
+  \subsubsection{Scenario D}
+  
+  \begin{center}
+    \begin{tabular}{||c c c c c||} 
+      \hline
+      Test Number & Accuracy (\%) - Original & Doc Length - Original & Accuracy (\%) - Modified & Doc Length - Modified \\ [0.5ex] 
+      \hline\hline
+      1 & 12.11 & 8845 & 90.80 & 2566 \\ 
+      \hline
+      2 &  8.20 & 8625 & 91.69 & 2600 \\ 
+      \hline
+      3 &  6.28 & 8653 & 90.82 & 2561 \\ 
+      \hline
+      4 &  4.32 & 8603 & 90.63 & 2560 \\ 
+      \hline
+      5 & 12.15 & 8637 & 89.61 & 2541 \\ 
+      \hline
+      6 &  8.26 & 8581 & 90.65 & 2578 \\ 
+      \hline
+      7 &  2.39 & 8637 & 89.73 & 2572 \\ 
+      \hline
+      8 & 10.30 & 8602 & 90.24 & 2557 \\ 
+      \hline
+      9 &  6.42 & 8633 & 89.87 & 2549 \\ 
+      \hline
+      10 & 8.22 & 8643 & 90.91 & 2552 \\ 
       \hline
     \end{tabular}
   \end{center}

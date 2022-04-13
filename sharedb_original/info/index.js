@@ -44,7 +44,7 @@ doc.subscribe(function(error) {
                 // information.push(getSnapshot());
 
                 checkAndUpdateAccuracy();
-            }, 180000);
+            }, totalTime);
         }
     });
 });

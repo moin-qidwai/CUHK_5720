@@ -58,7 +58,9 @@
 \contentsline {subsection}{\numberline {8.3}Disadvantages of Periodic Convergence}{25}%
 \contentsline {section}{\numberline {9}Accuracy Testing for Periodic Convergence}{27}%
 \contentsline {subsection}{\numberline {9.1}Testing VM Specifications}{27}%
-\contentsline {subsection}{\numberline {9.2}Results}{28}%
-\contentsline {subsubsection}{\numberline {9.2.1}Scenario A}{28}%
-\contentsline {section}{\numberline {10}Conclusion}{30}%
-\contentsline {section}{\numberline {11}References}{31}%
+\contentsline {subsubsection}{\numberline {9.1.1}Scenario A}{28}%
+\contentsline {subsubsection}{\numberline {9.1.2}Scenario B}{28}%
+\contentsline {subsubsection}{\numberline {9.1.3}Scenario C}{29}%
+\contentsline {subsubsection}{\numberline {9.1.4}Scenario D}{30}%
+\contentsline {section}{\numberline {10}Conclusion}{31}%
+\contentsline {section}{\numberline {11}References}{32}%
